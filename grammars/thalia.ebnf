@@ -1,0 +1,130 @@
+(*** RULES ***)
+root = WS {decl} WS;
+
+decl = decl_extern | decl_intern;
+decl_extern = USE WS decl_info WS SEMI;
+decl_intern = (GLOBAL | LOCAL) WS decl_def;
+
+decl_def = decl_fun_def;
+decl_fun_def = decl_fun_info WS stmt_block;
+
+decl_info = decl_fun_info;
+decl_fun_info = ID WS decl_param_list WS COLON WS expr_type;
+decl_param_list = LPAREN [WS decl_param {WS COMMA WS decl_param}] WS RPAREN;
+decl_param = ID WS COLON WS expr_type;
+
+decl_var_list = decl_var {WS COMMA WS decl_var};
+decl_var = decl_mut_var WS decl_const_var;
+decl_const_var = decl_var_info WS ASSIGN WS expr;
+decl_mut_var = MUT WS decl_var_info [WS ASSIGN WS expr];
+decl_var_info = ID WS COLON WS expr_type;
+
+stmt = stmt_block
+     | stmt_expr
+     | stmt_return
+     | stmt_if
+     | stmt_while
+     | stmt_local;
+stmt_block = LBRACE {WS stmt} WS RBRACE;
+stmt_expr = expr WS SEMI;
+stmt_return = RETURN WS expr WS SEMI;
+stmt_while = WHILE WS expr WS stmt_block;
+stmt_if = IF WS expr WS stmt_block [WS ELSE WS (stmt_block | stmt_if)];
+stmt_local = DEF WS decl_var_list WS SEMI;
+
+expr = expr_assign;
+expr_assign = expr_log_or
+            | expr_unary WS expr_assign_op WS expr;
+expr_log_or = [expr_log_or WS LOG_OR WS] expr_log_and;
+expr_log_and = [expr_log_and WS LOG_AND WS] expr_bit_or;
+expr_bit_or = [expr_bit_or WS BIT_OR WS] expr_xor;
+expr_xor = [expr_xor WS XOR WS] expr_bit_and;
+expr_bit_and = [expr_bit_and WS BIT_AND WS] expr_equ;
+expr_equ = [expr_equ WS (EQUAL | NOT_EQUAL) WS] expr_rel;
+expr_rel = [expr_rel WS (LESS | LESS_EQU | GRT | GRT_EQU) WS] expr_shift;
+expr_shift = [expr_shift WS (LSHIFT | RSHIFT) WS] expr_add;
+expr_add = [expr_add WS (PLUS | MINUS) WS] expr_mul;
+expr_mul = [expr_mul WS (MUL | DIV | MOD) WS] expr_unary;
+expr_unary = (MINUS | PLUS | LOG_NOT | BIT_NOT) WS expr_unary
+           | CAST WS LPAREN WS expr_type WS RPAREN WS expr_unary
+           | expr_primary;
+expr_primary = LPAREN WS expr WS RPAREN
+             | ID
+             | INT;
+expr_type = VOID | I8 | I16 | I32 | I64;
+<expr_assign_op> = ASSIGN
+               | MINUS_ASSIGN
+               | PLUS_ASSIGN
+               | MUL_ASSIGN
+               | DIV_ASSIGN
+               | MOD_ASSIGN
+               | AND_ASSIGN
+               | OR_ASSIGN
+               | XOR_ASSIGN
+               | RSH_ASSIGN
+               | LSH_ASSIGN;
+
+(*** TOKENS ***)
+INT = #'[0-9]+';
+ID = #'[_a-zA-Z][_a-zA-Z0-9]*';
+
+VOID = 'void';
+I8 = 'i8';
+I16 = 'i16';
+I32 = 'i32';
+I64 = 'i64';
+
+USE = 'use';
+GLOBAL = 'global';
+LOCAL = 'local';
+RETURN = 'return';
+WHILE = 'while';
+IF = 'if';
+ELSE = 'else';
+MUT = 'mut';
+DEF = 'def';
+
+CAST = '$';
+MINUS = '-';
+PLUS = '+';
+MUL = '*';
+DIV = '/';
+MOD = '%';
+LESS = '<';
+LESS_EQU = '<=';
+GRT = '>';
+GRT_EQU = '>=';
+EQUAL = '==';
+NOT_EQUAL = '!=';
+RSHIFT = '>>';
+LSHIFT = '<<';
+LOG_NOT = '!';
+LOG_OR = '||';
+LOG_AND = '&&';
+BIT_NOT = '~';
+BIT_AND = '&';
+BIT_OR = '|';
+XOR = '^';
+ASSIGN = '=';
+MINUS_ASSIGN = '-=';
+PLUS_ASSIGN = '+=';
+MUL_ASSIGN = '*=';
+DIV_ASSIGN = '/=';
+MOD_ASSIGN = '%=';
+AND_ASSIGN = '&=';
+OR_ASSIGN = '|=';
+XOR_ASSIGN = '^=';
+RSH_ASSIGN = '>>=';
+LSH_ASSIGN = '<<=';
+LPAREN = '(';
+RPAREN = ')';
+LBRACE = '{';
+RBRACE = '}';
+LBRACKET = '[';
+RBRACKET = ']';
+COMMA = ',';
+SEMI = ';';
+COLON = ':';
+
+<WS> = #'\s*';
+
