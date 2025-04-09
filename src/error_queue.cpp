@@ -20,7 +20,7 @@
 
 namespace thalia {
   error_queue& error_queue::operator<<(
-    const syntax::lexer::error& error
+    syntax::lexer::error const& error
   ) {
     using t = syntax::lexer::error_type;
 

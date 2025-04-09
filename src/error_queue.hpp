@@ -30,7 +30,7 @@ namespace thalia {
       explicit error_queue(std::ostream& os)
         : _os(os) {}
 
-      error_queue& operator<<(const syntax::lexer::error& error) override;
+      error_queue& operator<<(syntax::lexer::error const& error) override;
 
     private:
       std::ostream& _os;

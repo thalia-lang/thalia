@@ -29,7 +29,7 @@ namespace thalia::syntax {
     return result != types.end();
   }
 
-  extern std::ostream& operator<<(std::ostream& os, const token& token) {
+  extern std::ostream& operator<<(std::ostream& os, token const& token) {
     return os
       << token._type << "['"
       << token._value << "', "

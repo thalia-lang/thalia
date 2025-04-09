@@ -89,16 +89,16 @@ namespace thalia::syntax {
     { ":", token_type::Colon }
   };
 
-  template <typename K, typename V>
+  template <typename Key, typename Value>
   static token_type find_in(
-    const std::pair<K, V>* begin,
-    const std::pair<K, V>* end,
-    const K& key,
-    const V& def_value
+    std::pair<Key, Value> const* begin,
+    std::pair<Key, Value> const* end,
+    Key const& key,
+    Value const& def_value
   ) {
-    const auto* result = std::find_if(
+    auto const* result = std::find_if(
 			begin, end,
-			[key](const auto& p) -> bool { return key == p.first; }
+			[key](auto const& p) -> bool { return key == p.first; }
 		);
 		return result != end
       ? result->second : def_value;

@@ -114,7 +114,7 @@ namespace thalia::syntax {
 
       bool is(std::initializer_list<token_type> types) const;
 
-      friend std::ostream& operator<<(std::ostream& os, const token& token);
+      friend std::ostream& operator<<(std::ostream& os, token const& token);
 
     private:
       token_type _type;
