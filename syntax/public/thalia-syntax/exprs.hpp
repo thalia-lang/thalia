@@ -40,9 +40,9 @@ namespace thalia::syntax {
   class expr_assign: public expression {
     public:
       explicit expr_assign(
-        const token& operation,
-        const std::shared_ptr<expression> target,
-        const std::shared_ptr<expression> value
+        token const& operation,
+        std::shared_ptr<expression> const& target,
+        std::shared_ptr<expression> const& value
       ) : expression(expr_type::Assign)
         , _operation(operation)
         , _target(target)
@@ -61,9 +61,9 @@ namespace thalia::syntax {
   class expr_binary: public expression {
     public:
       explicit expr_binary(
-        const token& operation,
-        const std::shared_ptr<expression> lhs,
-        const std::shared_ptr<expression> rhs
+        token const& operation,
+        std::shared_ptr<expression> const& lhs,
+        std::shared_ptr<expression> const& rhs
       ) : expression(expr_type::Binary)
         , _operation(operation)
         , _lhs(lhs)
@@ -82,8 +82,8 @@ namespace thalia::syntax {
   class expr_unary: public expression {
     public:
       explicit expr_unary(
-        const token& operation,
-        const std::shared_ptr<expression> value
+        token const& operation,
+        std::shared_ptr<expression> const& value
       ) : expression(expr_type::Unary)
         , _operation(operation)
         , _value(value) {}
@@ -99,7 +99,7 @@ namespace thalia::syntax {
   class expr_paren: public expression {
     public:
       explicit expr_paren(
-        const std::shared_ptr<expression> value
+        std::shared_ptr<expression> const& value
       ) : expression(expr_type::Paren)
         , _value(value) {}
 
@@ -111,7 +111,7 @@ namespace thalia::syntax {
 
   class expr_base_lit: public expression {
     public:
-      explicit expr_base_lit(const token& target)
+      explicit expr_base_lit(token const& target)
         : expression(expr_type::BaseLit)
         , _target(target) {}
 
@@ -123,7 +123,7 @@ namespace thalia::syntax {
 
   class expr_id: public expression {
     public:
-      explicit expr_id(const token& target)
+      explicit expr_id(token const& target)
         : expression(expr_type::Id)
         , _target(target) {}
 
@@ -135,7 +135,7 @@ namespace thalia::syntax {
 
   class expr_data_type: public expression {
     public:
-      explicit expr_data_type(const token& target)
+      explicit expr_data_type(token const& target)
         : expression(expr_type::DataType)
         , _target(target) {}
 
