@@ -17,7 +17,6 @@
  */
 
 #include <iostream>
-#include <memory>
 
 #include <thalia-syntax/lexer.hpp>
 
@@ -31,7 +30,7 @@ extern int main(int argc, char** argv) {
     return 1;
   }
 
-  auto equeue = std::make_shared<error_queue>(error_queue(std::cout));
+  error_queue equeue(std::cout);
 
   std::string code(argv[1]);
   syntax::lexer lexer(equeue, code.begin(), code.end());

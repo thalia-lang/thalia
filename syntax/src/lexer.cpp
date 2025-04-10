@@ -163,7 +163,7 @@ namespace thalia::syntax {
     token token(type, advance(max_size), _line, col);
 
     if (type == token_type::Unknown)
-      *_errors << error(error_type::UnknownCharacter, token);
+      _errors << error(error_type::UnknownCharacter, token);
     return token;
   }
 

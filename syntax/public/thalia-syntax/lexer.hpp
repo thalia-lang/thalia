@@ -20,7 +20,6 @@
 #define _THALIA_SYNTAX_LEXER_
 
 #include <cstddef>
-#include <memory>
 #include <string_view>
 
 #include "errors.hpp"
@@ -38,7 +37,7 @@ namespace thalia::syntax {
 
     public:
       explicit lexer(
-        std::shared_ptr<error_queue> const& equeue,
+        error_queue& equeue,
         std::string_view target,
         std::size_t init_line = 1,
         std::size_t init_col = 1
@@ -48,7 +47,7 @@ namespace thalia::syntax {
         , _col(init_col) {}
 
       explicit lexer(
-        std::shared_ptr<error_queue> const& equeue,
+        error_queue& equeue,
         std::string::const_iterator begin,
         std::string::const_iterator end,
         std::size_t init_line = 1,
@@ -66,7 +65,7 @@ namespace thalia::syntax {
       token next_symbol(std::size_t max_size = 1);
 
     private:
-      std::shared_ptr<error_queue> _errors;
+      error_queue& _errors;
       std::string_view _target;
       std::size_t _line;
       std::size_t _col;

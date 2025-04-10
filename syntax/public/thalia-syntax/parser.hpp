@@ -19,8 +19,6 @@
 #ifndef _THALIA_SYNTAX_PARSER_
 #define _THALIA_SYNTAX_PARSER_
 
-#include <memory>
-
 #include "errors.hpp"
 #include "lexer.hpp"
 
@@ -33,14 +31,12 @@ namespace thalia::syntax {
       using error_queue = error_queue<error_type, token>;
 
     public:
-      explicit parser(
-        std::shared_ptr<error_queue> const& equeue,
-        lexer const& lexer
-      ) : _errors(equeue)
+      explicit parser(error_queue& equeue, lexer const& lexer)
+        : _errors(equeue)
         , _lexer(lexer) {}
 
     private:
-      std::shared_ptr<error_queue> _errors;
+      error_queue& _errors;
       lexer _lexer;
   };
 }
