@@ -16,38 +16,34 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef _THALIA_SYNTAX_NODE_
-#define _THALIA_SYNTAX_NODE_
+#ifndef _THALIA_SYNTAX_PARSER_
+#define _THALIA_SYNTAX_PARSER_
 
-#include <algorithm>
-#include <initializer_list>
+#include <memory>
+
+#include "errors.hpp"
+#include "lexer.hpp"
 
 namespace thalia::syntax {
-  template <typename Type>
-  class node {
+  class parser {
     public:
-      explicit node(Type type)
-        : _type(type) {}
+      enum class error_type {};
 
-      virtual ~node() = default;
+      using error = error<error_type, token>;
+      using error_queue = error_queue<error_type, token>;
 
-      bool is(Type type) const { return _type == type; }
-      Type type() const { return _type; }
-
-      bool is(std::initializer_list<Type> types) const;
+    public:
+      explicit parser(
+        std::shared_ptr<error_queue> const& equeue,
+        lexer const& lexer
+      ) : _errors(equeue)
+        , _lexer(lexer) {}
 
     private:
-      Type _type;
+      std::shared_ptr<error_queue> _errors;
+      lexer _lexer;
   };
-
-  template <typename Type>
-  extern bool node<Type>::is(
-    std::initializer_list<Type> types
-  ) const {
-    auto const* result = std::find(types.begin(), types.end(), _type);
-    return result != types.end();
-  }
 }
 
-#endif // _THALIA_SYNTAX_NODE_
+#endif // _THALIA_SYNTAX_PARSER_
 
