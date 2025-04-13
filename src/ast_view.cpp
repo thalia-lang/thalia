@@ -24,7 +24,8 @@ namespace thalia {
     ast_view target(root->target(), _deep + 1);
     ast_view value(root->value(), _deep + 1);
     return os
-      << _space << "ExprAssign {\n"
+      << _space << "ExprAssign {\n  "
+      << _space << root->operation() << ",\n"
       << target << ",\n"
       << value << "\n"
       << _space << "}";
@@ -35,7 +36,8 @@ namespace thalia {
     ast_view lhs(root->lhs(), _deep + 1);
     ast_view rhs(root->rhs(), _deep + 1);
     return os
-      << _space << "ExprBinary {\n"
+      << _space << "ExprBinary {\n  "
+      << _space << root->operation() << ",\n"
       << lhs << ",\n"
       << rhs << "\n"
       << _space << "}";
@@ -45,7 +47,8 @@ namespace thalia {
     auto root = (std::shared_ptr<syntax::expr_unary> const&)_node;
     ast_view value(root->value(), _deep + 1);
     return os
-      << _space << "ExprUnary {\n"
+      << _space << "ExprUnary {\n  "
+      << _space << root->operation() << ",\n"
       << value << "\n"
       << _space << "}";
   }
@@ -54,7 +57,7 @@ namespace thalia {
     auto root = (std::shared_ptr<syntax::expr_paren> const&)_node;
     ast_view value(root->value(), _deep + 1);
     return os
-      << _space << "ExprParen {\n"
+      << _space << "ExprParen {\n  "
       << value << "\n"
       << _space << "}";
   }
