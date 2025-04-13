@@ -157,9 +157,9 @@ namespace thalia::syntax {
 
       virtual ~expr_visitor() = default;
 
-      output_type visit(input_type value);
-
     protected:
+      output_type visit_expr(input_type value);
+
       virtual output_type visit_expr_assign(input_type value) = 0;
       virtual output_type visit_expr_binary(input_type value) = 0;
       virtual output_type visit_expr_unary(input_type value) = 0;
@@ -173,7 +173,7 @@ namespace thalia::syntax {
   };
 
   template <typename Input, typename Output>
-  extern Output expr_visitor<Input, Output>::visit(Input value) {
+  extern Output expr_visitor<Input, Output>::visit_expr(Input value) {
     switch (_node->type()) {
       case expr_type::Assign:
         return visit_expr_assign(value);

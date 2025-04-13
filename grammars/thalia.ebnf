@@ -14,7 +14,7 @@ decl_param_list = LPAREN [WS decl_param {WS COMMA WS decl_param}] WS RPAREN;
 decl_param = ID WS COLON WS expr_type;
 
 decl_var_list = decl_var {WS COMMA WS decl_var};
-decl_var = decl_mut_var WS decl_const_var;
+decl_var = decl_mut_var | decl_const_var;
 decl_const_var = decl_var_info WS ASSIGN WS expr;
 decl_mut_var = MUT WS decl_var_info [WS ASSIGN WS expr];
 decl_var_info = ID WS COLON WS expr_type;

@@ -36,6 +36,8 @@ namespace thalia {
         , _deep(deep)
         , _space(deep * 2, ' ') {}
 
+      friend std::ostream& operator<<(std::ostream&, ast_view& view);
+
     protected:
       output_type visit_expr_assign(input_type os) override;
       output_type visit_expr_binary(input_type os) override;
@@ -51,7 +53,7 @@ namespace thalia {
   };
 
   inline std::ostream& operator<<(std::ostream& os, ast_view& view) {
-    return view.visit(os);
+    return view.visit_expr(os);
   }
 }
 
