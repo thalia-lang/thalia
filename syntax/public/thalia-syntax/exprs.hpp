@@ -115,7 +115,7 @@ namespace thalia::syntax {
         : expression(expr_type::BaseLit)
         , _target(target) {}
 
-      token operation() const { return _target; }
+      token target() const { return _target; }
 
     private:
       token _target;
@@ -127,7 +127,7 @@ namespace thalia::syntax {
         : expression(expr_type::Id)
         , _target(target) {}
 
-      token operation() const { return _target; }
+      token target() const { return _target; }
 
     private:
       token _target;
@@ -139,11 +139,58 @@ namespace thalia::syntax {
         : expression(expr_type::DataType)
         , _target(target) {}
 
-      token operation() const { return _target; }
+      token target() const { return _target; }
 
     private:
       token _target;
   };
+
+  template <typename Input, typename Output>
+  class expr_visitor {
+    public:
+      using input_type = Input;
+      using output_type = Output;
+
+    public:
+      explicit expr_visitor(std::shared_ptr<expression> const& node)
+        : _node(node) {}
+
+      virtual ~expr_visitor() = default;
+
+      output_type visit(input_type value);
+
+    protected:
+      virtual output_type visit_expr_assign(input_type value) = 0;
+      virtual output_type visit_expr_binary(input_type value) = 0;
+      virtual output_type visit_expr_unary(input_type value) = 0;
+      virtual output_type visit_expr_paren(input_type value) = 0;
+      virtual output_type visit_expr_base_lit(input_type value) = 0;
+      virtual output_type visit_expr_id(input_type value) = 0;
+      virtual output_type visit_expr_data_type(input_type value) = 0;
+
+    protected:
+      std::shared_ptr<expression> _node;
+  };
+
+  template <typename Input, typename Output>
+  extern Output expr_visitor<Input, Output>::visit(Input value) {
+    switch (_node->type()) {
+      case expr_type::Assign:
+        return visit_expr_assign(value);
+      case expr_type::Binary:
+        return visit_expr_binary(value);
+      case expr_type::Unary:
+        return visit_expr_unary(value);
+      case expr_type::Paren:
+        return visit_expr_paren(value);
+      case expr_type::BaseLit:
+        return visit_expr_base_lit(value);
+      case expr_type::Id:
+        return visit_expr_id(value);
+      case expr_type::DataType:
+        return visit_expr_data_type(value);
+    }
+  }
 }
 
 #endif // _THALIA_SYNTAX_EXPRS_

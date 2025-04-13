@@ -104,21 +104,32 @@ namespace thalia::syntax {
       ? result->second : def_value;
   }
 
-  extern token lexer::next() {
+  extern std::vector<token> lexer::scan_all() {
+    std::vector<token> tokens;
+    auto token = scan_next();
+    while (!token.eof()) {
+      if (!token.unknown())
+        tokens.push_back(token);
+      token = scan_next();
+    }
+    return tokens;
+  }
+
+  extern token lexer::scan_next() {
     skip_whitespace();
     if (_target.empty())
       return token(token_type::Eof, _target, _line, _col);
 
     if (std::isdigit(_target[0]))
-      return next_number();
+      return scan_number();
 
     if (_target[0] == '_' || std::isalpha(_target[0]))
-      return next_kw_or_id();
+      return scan_kw_or_id();
 
-    return next_symbol(3);
+    return scan_symbol(3);
   }
 
-  extern token lexer::next_number() {
+  extern token lexer::scan_number() {
     std::size_t pos = 0;
     std::size_t col = _col;
     while (pos < _target.size() && std::isdigit(_target[pos]))
@@ -129,7 +140,7 @@ namespace thalia::syntax {
     return token(token_type::Int, value, _line, col);
   }
 
-  extern token lexer::next_kw_or_id() {
+  extern token lexer::scan_kw_or_id() {
     std::size_t pos = 0;
     std::size_t col = _col;
     while (pos < _target.size()
@@ -146,9 +157,9 @@ namespace thalia::syntax {
     return token(type, value, _line, col);
   }
 
-  extern token lexer::next_symbol(std::size_t max_size) {
+  extern token lexer::scan_symbol(std::size_t max_size) {
     if (max_size > _target.size())
-      return next_symbol(max_size - 1);
+      return scan_symbol(max_size - 1);
 
     auto type = find_in(
       std::begin(symbols), std::end(symbols),
@@ -156,7 +167,7 @@ namespace thalia::syntax {
     );
 
     if (max_size > 1 && type == token_type::Unknown)
-      return next_symbol(max_size - 1);
+      return scan_symbol(max_size - 1);
 
     std::size_t col = _col;
     _col += max_size;

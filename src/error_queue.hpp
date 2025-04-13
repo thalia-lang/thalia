@@ -22,18 +22,28 @@
 #include <ostream>
 
 #include <thalia-syntax/lexer.hpp>
+#include <thalia-syntax/parser.hpp>
 
 namespace thalia {
   class error_queue
-    : public syntax::lexer::error_queue {
+    : public syntax::lexer::error_queue
+    , public syntax::parser::error_queue {
     public:
-      explicit error_queue(std::ostream& os)
-        : _os(os) {}
+      explicit error_queue(std::ostream& os, std::size_t max_size = 0)
+        : _os(os)
+        , _max_size(max_size)
+        , _size(0) {}
+
+      bool empty() { return _max_size == 0; }
+      bool full() { return _max_size && _size >= _max_size; }
 
       error_queue& operator<<(syntax::lexer::error const& error) override;
+      error_queue& operator<<(syntax::parser::error const& error) override;
 
     private:
       std::ostream& _os;
+      std::size_t _max_size;
+      std::size_t _size;
   };
 }
 

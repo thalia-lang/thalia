@@ -23,17 +23,53 @@ namespace thalia {
     syntax::lexer::error const& error
   ) {
     using t = syntax::lexer::error_type;
-
     _os << "[ERROR]: ";
     switch (error.type) {
       case t::UnknownCharacter:
-        _os << "Unknown character";
+        _os << "Unknown character"; break;
     }
 
     _os
       << " '" << error.target.value()
       << "'\n    ---> on line " << error.target.line()
       << ", column " << error.target.col() << ".\n";
+
+    ++_size;
+    if (_max_size != 0 && _size >= _max_size) {
+      _os << "[INFO]: Too many errors, stopping now.\n";
+      std::exit(EXIT_FAILURE);
+    }
+
+    return *this;
+  }
+
+  error_queue& error_queue::operator<<(
+    syntax::parser::error const& error
+  ) {
+    using t = syntax::parser::error_type;
+    _os << "[ERROR]: ";
+    switch (error.type) {
+      case t::UnexpectedEof:
+        _os << "Unexpected end of the file"; break;
+      case t::ExpectedDataType:
+        _os << "Expected a data type"; break;
+      case t::ExpectedRParen:
+        _os << "Expected '(' after expression"; break;
+      case t::ExpectedPrimary:
+        _os << "Expected a primary expression"; break;
+    }
+
+    _os
+      << "\n    ---> on value '" << error.target.value()
+      << "'\n    ---> on line " << error.target.line()
+      << ", column " << error.target.col() << ".\n";
+
+    ++_size;
+    if (_max_size != 0 && _size >= _max_size) {
+      _os << "[INFO]: Too many errors, stopping now.\n";
+      std::exit(EXIT_FAILURE);
+    }
+
     return *this;
   }
 }

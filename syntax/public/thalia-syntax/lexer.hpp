@@ -21,6 +21,7 @@
 
 #include <cstddef>
 #include <string_view>
+#include <vector>
 
 #include "errors.hpp"
 #include "token.hpp"
@@ -54,15 +55,16 @@ namespace thalia::syntax {
         std::size_t init_col = 1
       ) : lexer(equeue, std::string_view(begin, end), init_line, init_col) {}
 
-      token next();
+      token scan_next();
+      std::vector<token> scan_all();
 
     private:
       void skip_whitespace();
       std::string_view advance(std::size_t npos);
 
-      token next_number();
-      token next_kw_or_id();
-      token next_symbol(std::size_t max_size = 1);
+      token scan_number();
+      token scan_kw_or_id();
+      token scan_symbol(std::size_t max_size = 1);
 
     private:
       error_queue& _errors;

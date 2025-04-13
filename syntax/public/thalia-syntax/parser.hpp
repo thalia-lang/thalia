@@ -19,25 +19,71 @@
 #ifndef _THALIA_SYNTAX_PARSER_
 #define _THALIA_SYNTAX_PARSER_
 
+#include <initializer_list>
+#include <memory>
+#include <functional>
+#include <vector>
+
 #include "errors.hpp"
-#include "lexer.hpp"
+#include "exprs.hpp"
 
 namespace thalia::syntax {
   class parser {
     public:
-      enum class error_type {};
+      enum class error_type {
+        UnexpectedEof,
+        ExpectedDataType,
+        ExpectedPrimary,
+        ExpectedRParen
+      };
 
       using error = error<error_type, token>;
       using error_queue = error_queue<error_type, token>;
 
     public:
-      explicit parser(error_queue& equeue, lexer const& lexer)
-        : _errors(equeue)
-        , _lexer(lexer) {}
+      explicit parser(
+        error_queue& equeue,
+        std::vector<token>::const_iterator begin,
+        std::vector<token>::const_iterator end
+      ) : _errors(equeue)
+        , _end(end)
+        , _current(begin) {}
+
+      explicit parser(
+        error_queue& equeue,
+        std::vector<token> const& tokens
+      ) : parser(equeue, tokens.cbegin(), tokens.cend()) {}
+
+      std::shared_ptr<expression> parse();
+
+    private:
+      token const& advance();
+
+      std::shared_ptr<expression> parse_expression();
+      std::shared_ptr<expression> parse_assign();
+      std::shared_ptr<expression> parse_log_or();
+      std::shared_ptr<expression> parse_log_and();
+      std::shared_ptr<expression> parse_bit_or();
+      std::shared_ptr<expression> parse_xor();
+      std::shared_ptr<expression> parse_bit_and();
+      std::shared_ptr<expression> parse_equ();
+      std::shared_ptr<expression> parse_rel();
+      std::shared_ptr<expression> parse_shift();
+      std::shared_ptr<expression> parse_add();
+      std::shared_ptr<expression> parse_mul();
+      std::shared_ptr<expression> parse_unary();
+      std::shared_ptr<expression> parse_primary();
+      std::shared_ptr<expression> parse_data_type();
+
+      std::shared_ptr<expression> parse_binary(
+        std::initializer_list<token_type> types,
+        std::function<std::shared_ptr<expression>()> next_value
+      );
 
     private:
       error_queue& _errors;
-      lexer _lexer;
+      std::vector<token>::const_iterator _end;
+      std::vector<token>::const_iterator _current;
   };
 }
 

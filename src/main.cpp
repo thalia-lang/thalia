@@ -19,7 +19,9 @@
 #include <iostream>
 
 #include <thalia-syntax/lexer.hpp>
+#include <thalia-syntax/parser.hpp>
 
+#include "ast_view.hpp"
 #include "error_queue.hpp"
 
 using namespace thalia;
@@ -30,17 +32,25 @@ extern int main(int argc, char** argv) {
     return 1;
   }
 
+  std::string code(argv[1]);
   error_queue equeue(std::cout);
 
-  std::string code(argv[1]);
+  std::cout << "=== LEXER ===\n";
   syntax::lexer lexer(equeue, code.begin(), code.end());
+  auto tokens = lexer.scan_all();
+  for (auto const& t: tokens)
+    std::cout << t << '\n';
+  if (!equeue.empty())
+    return 1;
 
-  syntax::token token = lexer.next();
-  while (!token.eof()) {
-    if (!token.unknown())
-      std::cout << token << "\n";
-    token = lexer.next();
-  }
+  std::cout << "\n=== PARSER ===\n";
+  syntax::parser parser(equeue, tokens);
+  auto ast = parser.parse();
+  if (!equeue.empty())
+    return 1;
+
+  ast_view view(ast);
+  std::cout << view << '\n';
   return 0;
 }
 
