@@ -54,31 +54,31 @@ namespace thalia::syntax {
         std::vector<token> const& tokens
       ) : parser(equeue, tokens.cbegin(), tokens.cend()) {}
 
-      std::shared_ptr<expression> parse();
+      auto parse() -> std::shared_ptr<expression>;
 
     private:
-      token const& advance();
+      auto advance() -> token const&;
 
-      std::shared_ptr<expression> parse_expression();
-      std::shared_ptr<expression> parse_assign();
-      std::shared_ptr<expression> parse_log_or();
-      std::shared_ptr<expression> parse_log_and();
-      std::shared_ptr<expression> parse_bit_or();
-      std::shared_ptr<expression> parse_xor();
-      std::shared_ptr<expression> parse_bit_and();
-      std::shared_ptr<expression> parse_equ();
-      std::shared_ptr<expression> parse_rel();
-      std::shared_ptr<expression> parse_shift();
-      std::shared_ptr<expression> parse_add();
-      std::shared_ptr<expression> parse_mul();
-      std::shared_ptr<expression> parse_unary();
-      std::shared_ptr<expression> parse_primary();
-      std::shared_ptr<expression> parse_data_type();
+      auto parse_expression() -> std::shared_ptr<expression>;
+      auto parse_assign() -> std::shared_ptr<expression>;
+      auto parse_log_or() -> std::shared_ptr<expression>;
+      auto parse_log_and() -> std::shared_ptr<expression>;
+      auto parse_bit_or() -> std::shared_ptr<expression>;
+      auto parse_xor() -> std::shared_ptr<expression>;
+      auto parse_bit_and() -> std::shared_ptr<expression>;
+      auto parse_equ() -> std::shared_ptr<expression>;
+      auto parse_rel() -> std::shared_ptr<expression>;
+      auto parse_shift() -> std::shared_ptr<expression>;
+      auto parse_add() -> std::shared_ptr<expression>;
+      auto parse_mul() -> std::shared_ptr<expression>;
+      auto parse_unary() -> std::shared_ptr<expression>;
+      auto parse_primary() -> std::shared_ptr<expression>;
+      auto parse_data_type() -> std::shared_ptr<expression>;
 
-      std::shared_ptr<expression> parse_binary(
+      auto parse_binary(
         std::initializer_list<token_type> types,
         std::function<std::shared_ptr<expression>()> next_value
-      );
+      ) -> std::shared_ptr<expression>;
 
     private:
       error_queue& _errors;

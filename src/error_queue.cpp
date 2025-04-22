@@ -19,9 +19,9 @@
 #include "error_queue.hpp"
 
 namespace thalia {
-  error_queue& error_queue::operator<<(
+  extern auto error_queue::operator<<(
     syntax::lexer::error const& error
-  ) {
+  ) -> error_queue& {
     using t = syntax::lexer::error_type;
     _os << "[ERROR]: ";
     switch (error.type) {
@@ -43,9 +43,9 @@ namespace thalia {
     return *this;
   }
 
-  error_queue& error_queue::operator<<(
+  extern auto error_queue::operator<<(
     syntax::parser::error const& error
-  ) {
+  ) -> error_queue& {
     using t = syntax::parser::error_type;
     _os << "[ERROR]: ";
     switch (error.type) {

@@ -48,9 +48,12 @@ namespace thalia::syntax {
         , _target(target)
         , _value(value) {}
 
-      token operation() const { return _operation; }
-      std::shared_ptr<expression> target() const { return _target; }
-      std::shared_ptr<expression> value() const { return _value; }
+      auto operation() const -> token
+        { return _operation; }
+      auto target() const -> std::shared_ptr<expression>
+        { return _target; }
+      auto value() const -> std::shared_ptr<expression>
+        { return _value; }
 
     private:
       token _operation;
@@ -69,9 +72,12 @@ namespace thalia::syntax {
         , _lhs(lhs)
         , _rhs(rhs) {}
 
-      token operation() const { return _operation; }
-      std::shared_ptr<expression> lhs() const { return _lhs; }
-      std::shared_ptr<expression> rhs() const { return _rhs; }
+      auto operation() const -> token
+        { return _operation; }
+      auto lhs() const -> std::shared_ptr<expression>
+        { return _lhs; }
+      auto rhs() const -> std::shared_ptr<expression>
+        { return _rhs; }
 
     private:
       token _operation;
@@ -88,8 +94,10 @@ namespace thalia::syntax {
         , _operation(operation)
         , _value(value) {}
 
-      token operation() const { return _operation; }
-      std::shared_ptr<expression> value() const { return _value; }
+      auto operation() const -> token
+        { return _operation; }
+      auto value() const -> std::shared_ptr<expression>
+        { return _value; }
 
     private:
       token _operation;
@@ -103,7 +111,8 @@ namespace thalia::syntax {
       ) : expression(expr_type::Paren)
         , _value(value) {}
 
-      std::shared_ptr<expression> value() const { return _value; }
+      auto value() const -> std::shared_ptr<expression>
+        { return _value; }
 
     private:
       std::shared_ptr<expression> _value;
@@ -115,7 +124,7 @@ namespace thalia::syntax {
         : expression(expr_type::BaseLit)
         , _target(target) {}
 
-      token target() const { return _target; }
+      auto target() const -> token { return _target; }
 
     private:
       token _target;
@@ -127,7 +136,7 @@ namespace thalia::syntax {
         : expression(expr_type::Id)
         , _target(target) {}
 
-      token target() const { return _target; }
+      auto target() const -> token { return _target; }
 
     private:
       token _target;
@@ -139,7 +148,7 @@ namespace thalia::syntax {
         : expression(expr_type::DataType)
         , _target(target) {}
 
-      token target() const { return _target; }
+      auto target() const -> token { return _target; }
 
     private:
       token _target;
@@ -148,32 +157,29 @@ namespace thalia::syntax {
   template <typename Input, typename Output>
   class expr_visitor {
     public:
-      using input_type = Input;
-      using output_type = Output;
-
-    public:
       explicit expr_visitor(std::shared_ptr<expression> const& node)
         : _node(node) {}
 
       virtual ~expr_visitor() = default;
 
     protected:
-      output_type visit_expr(input_type value);
+      auto visit_expr(Input value) -> Output;
 
-      virtual output_type visit_expr_assign(input_type value) = 0;
-      virtual output_type visit_expr_binary(input_type value) = 0;
-      virtual output_type visit_expr_unary(input_type value) = 0;
-      virtual output_type visit_expr_paren(input_type value) = 0;
-      virtual output_type visit_expr_base_lit(input_type value) = 0;
-      virtual output_type visit_expr_id(input_type value) = 0;
-      virtual output_type visit_expr_data_type(input_type value) = 0;
+      virtual auto visit_expr_assign(Input value) -> Output = 0;
+      virtual auto visit_expr_binary(Input value) -> Output = 0;
+      virtual auto visit_expr_unary(Input value) -> Output = 0;
+      virtual auto visit_expr_paren(Input value) -> Output = 0;
+      virtual auto visit_expr_base_lit(Input value) -> Output = 0;
+      virtual auto visit_expr_id(Input value) -> Output = 0;
+      virtual auto visit_expr_data_type(Input value) -> Output = 0;
 
     protected:
       std::shared_ptr<expression> _node;
   };
 
   template <typename Input, typename Output>
-  extern Output expr_visitor<Input, Output>::visit_expr(Input value) {
+  extern auto expr_visitor<Input, Output>::visit_expr(Input value)
+    -> Output {
     switch (_node->type()) {
       case expr_type::Assign:
         return visit_expr_assign(value);

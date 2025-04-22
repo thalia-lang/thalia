@@ -31,19 +31,20 @@ namespace thalia::syntax {
 
       virtual ~node() = default;
 
-      bool is(Type type) const { return _type == type; }
-      Type type() const { return _type; }
+      auto is(Type type) const -> bool
+        { return _type == type; }
+      auto is(std::initializer_list<Type>types) const -> bool;
 
-      bool is(std::initializer_list<Type> types) const;
+      auto type() const -> Type
+        { return _type; }
 
     private:
       Type _type;
   };
 
   template <typename Type>
-  extern bool node<Type>::is(
-    std::initializer_list<Type> types
-  ) const {
+  extern auto node<Type>::is(std::initializer_list<Type> types) const
+    -> bool {
     auto const* result = std::find(types.begin(), types.end(), _type);
     return result != types.end();
   }

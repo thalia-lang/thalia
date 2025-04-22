@@ -21,18 +21,20 @@
 #include "thalia-syntax/token.hpp"
 
 namespace thalia::syntax {
-  extern std::shared_ptr<expression> parser::parse() {
+  extern auto parser::parse()
+    -> std::shared_ptr<expression> {
     return parse_expression();
   }
 
-  extern std::shared_ptr<expression> parser::parse_expression() {
+  extern auto parser::parse_expression()
+    -> std::shared_ptr<expression> {
     return parse_assign();
   }
 
-  extern std::shared_ptr<expression> parser::parse_assign() {
+  extern auto parser::parse_assign()
+    -> std::shared_ptr<expression> {
     auto target = parse_log_or();
-
-    bool is_assign = _current->is({
+    auto is_assign = _current->is({
       token_type::Assign,
       token_type::AndAssign,
       token_type::OrAssign,
@@ -55,49 +57,56 @@ namespace thalia::syntax {
     );
   }
 
-  extern std::shared_ptr<expression> parser::parse_log_or() {
+  extern auto parser::parse_log_or()
+    -> std::shared_ptr<expression> {
     return parse_binary(
       { token_type::LogOr },
       [&]() -> auto { return parse_log_and(); }
     );
   }
 
-  extern std::shared_ptr<expression> parser::parse_log_and() {
+  extern auto parser::parse_log_and()
+    -> std::shared_ptr<expression> {
     return parse_binary(
       { token_type::LogAnd },
       [&]() -> auto { return parse_bit_or(); }
     );
   }
 
-  extern std::shared_ptr<expression> parser::parse_bit_or() {
+  extern auto parser::parse_bit_or()
+    -> std::shared_ptr<expression> {
     return parse_binary(
       { token_type::BitOr },
       [&]() -> auto { return parse_xor(); }
     );
   }
 
-  extern std::shared_ptr<expression> parser::parse_xor() {
+  extern auto parser::parse_xor()
+    -> std::shared_ptr<expression> {
     return parse_binary(
       { token_type::Xor },
       [&]() -> auto { return parse_bit_and(); }
     );
   }
 
-  extern std::shared_ptr<expression> parser::parse_bit_and() {
+  extern auto parser::parse_bit_and()
+    -> std::shared_ptr<expression> {
     return parse_binary(
       { token_type::BitAnd },
       [&]() -> auto { return parse_equ(); }
     );
   }
 
-  extern std::shared_ptr<expression> parser::parse_equ() {
+  extern auto parser::parse_equ()
+    -> std::shared_ptr<expression> {
     return parse_binary(
       { token_type::Equal, token_type::NotEqual },
       [&]() -> auto { return parse_rel(); }
     );
   }
 
-  extern std::shared_ptr<expression> parser::parse_rel() {
+  extern auto parser::parse_rel()
+    -> std::shared_ptr<expression> {
     return parse_binary(
       {
         token_type::Grt,
@@ -109,28 +118,32 @@ namespace thalia::syntax {
     );
   }
 
-  extern std::shared_ptr<expression> parser::parse_shift() {
+  extern auto parser::parse_shift()
+    -> std::shared_ptr<expression> {
     return parse_binary(
       { token_type::RShift, token_type::LShift },
       [&]() -> auto { return parse_add(); }
     );
   }
 
-  extern std::shared_ptr<expression> parser::parse_add() {
+  extern auto parser::parse_add()
+    -> std::shared_ptr<expression> {
     return parse_binary(
       { token_type::Plus, token_type::Minus },
       [&]() -> auto { return parse_mul(); }
     );
   }
 
-  extern std::shared_ptr<expression> parser::parse_mul() {
+  extern auto parser::parse_mul()
+    -> std::shared_ptr<expression> {
     return parse_binary(
       { token_type::Mul, token_type::Div, token_type::Mod },
       [&]() -> auto { return parse_unary(); }
     );
   }
 
-  extern std::shared_ptr<expression> parser::parse_unary() {
+  extern auto parser::parse_unary()
+    -> std::shared_ptr<expression> {
     bool is_unary = _current->is({
       token_type::Plus,
       token_type::Minus,
@@ -149,7 +162,8 @@ namespace thalia::syntax {
     );
   }
 
-  extern std::shared_ptr<expression> parser::parse_primary() {
+  extern auto parser::parse_primary()
+    -> std::shared_ptr<expression> {
     if (_current->is(token_type::LParen)) {
       advance();
       auto value = parse_expression();
@@ -182,7 +196,8 @@ namespace thalia::syntax {
     return nullptr;
   }
 
-  extern std::shared_ptr<expression> parser::parse_data_type() {
+  extern auto parser::parse_data_type()
+    -> std::shared_ptr<expression> {
     bool is_type = _current->is({
       token_type::Void,
       token_type::I8,
@@ -202,10 +217,10 @@ namespace thalia::syntax {
     );
   }
 
-  extern std::shared_ptr<expression> parser::parse_binary(
+  extern auto parser::parse_binary(
     std::initializer_list<token_type> types,
     std::function<std::shared_ptr<expression>()> next_value
-  ) {
+  ) -> std::shared_ptr<expression> {
     auto result = next_value();
     while (_current->is(types)) {
       auto operation = advance();

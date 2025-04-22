@@ -26,7 +26,7 @@
 
 using namespace thalia;
 
-extern int main(int argc, char** argv) {
+extern auto main(int argc, char** argv) -> int {
   if (argc < 2) {
     std::cout << "[ERROR]: Invalid number of args.\n";
     return 1;

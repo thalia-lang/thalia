@@ -103,18 +103,25 @@ namespace thalia::syntax {
         , _line(line)
         , _col(col) {}
 
-      bool is(token_type type) const { return _type == type; }
-      bool eof() const { return is(token_type::Eof); }
-      bool unknown() const { return is(token_type::Unknown); }
+      auto eof() const -> bool
+        { return is(token_type::Eof); }
+      auto unknown() const -> bool
+        { return is(token_type::Unknown); }
+      auto is(token_type type) const -> bool
+        { return _type == type; }
+      auto is(std::initializer_list<token_type> types) const -> bool;
 
-      token_type type() const { return _type; }
-      std::string_view value() const { return _value; }
-      std::size_t line() const { return _line; }
-      std::size_t col() const { return _col; }
+      auto type() const -> token_type
+        { return _type; }
+      auto value() const -> std::string_view
+        { return _value; }
+      auto line() const -> std::size_t
+        { return _line; }
+      auto col() const -> std::size_t
+        { return _col; }
 
-      bool is(std::initializer_list<token_type> types) const;
-
-      friend std::ostream& operator<<(std::ostream& os, token const& token);
+      friend auto operator<<(std::ostream& os, token const& token)
+        -> std::ostream&;
 
     private:
       token_type _type;
@@ -123,7 +130,7 @@ namespace thalia::syntax {
       std::size_t _col;
   };
 
-  extern std::ostream& operator<<(std::ostream& os, token_type type);
+  extern auto operator<<(std::ostream& os, token_type type) -> std::ostream&;
 }
 
 #endif // _THALIA_SYNTAX_TOKEN_

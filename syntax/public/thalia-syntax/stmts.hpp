@@ -45,7 +45,8 @@ namespace thalia::syntax {
       ) : statement(stmt_type::Block)
         , _content(content) {}
 
-      std::vector<std::shared_ptr<statement>> content() { return _content; }
+      auto content() const -> std::vector<std::shared_ptr<statement>>
+        { return _content; }
 
     private:
       std::vector<std::shared_ptr<statement>> _content;
@@ -58,7 +59,8 @@ namespace thalia::syntax {
       ) : statement(stmt_type::Expr)
         , _value(value) {}
 
-      std::shared_ptr<expression> value() const { return _value; }
+      auto value() const -> std::shared_ptr<expression>
+        { return _value; }
 
     private:
       std::shared_ptr<expression> _value;
@@ -71,7 +73,8 @@ namespace thalia::syntax {
       ) : statement(stmt_type::Return)
         , _value(value) {}
 
-      std::shared_ptr<expression> value() const { return _value; }
+      auto value() const -> std::shared_ptr<expression>
+        { return _value; }
 
     private:
       std::shared_ptr<expression> _value;
@@ -88,9 +91,12 @@ namespace thalia::syntax {
         , _main_body(main_body)
         , _else_body(else_body) {}
 
-      std::shared_ptr<expression> condition() { return _condition; }
-      std::shared_ptr<statement> main_body() { return _main_body; }
-      std::shared_ptr<statement> else_body() { return _else_body; }
+      auto condition() const -> std::shared_ptr<expression>
+        { return _condition; }
+      auto main_body() const -> std::shared_ptr<statement>
+        { return _main_body; }
+      auto else_body() const -> std::shared_ptr<statement>
+        { return _else_body; }
 
     private:
       std::shared_ptr<expression> _condition;
@@ -107,8 +113,10 @@ namespace thalia::syntax {
         , _condition(condition)
         , _body(body) {}
 
-      std::shared_ptr<expression> condition() { return _condition; }
-      std::shared_ptr<statement> body() { return _body; }
+      auto condition() const -> std::shared_ptr<expression>
+        { return _condition; }
+      auto body() const -> std::shared_ptr<statement>
+        { return _body; }
 
     private:
       std::shared_ptr<expression> _condition;
@@ -128,10 +136,14 @@ namespace thalia::syntax {
         , _value(value)
         , _mut(mut) {}
 
-      bool is_mut() { return _mut; }
-      token id() { return _id; }
-      std::shared_ptr<expression> data_type() { return _data_type; }
-      std::shared_ptr<expression> value() { return _value; }
+      auto is_mut() const -> bool
+        { return _mut; }
+      auto id() const -> token
+        { return _id; }
+      auto data_type() const -> std::shared_ptr<expression>
+        { return _data_type; }
+      auto value() const -> std::shared_ptr<expression>
+        { return _value; }
 
     private:
       token _id;
@@ -143,31 +155,28 @@ namespace thalia::syntax {
   template <typename Input, typename Output>
   class stmt_visitor {
     public:
-      using input_type = Input;
-      using output_type = Output;
-
-    public:
       explicit stmt_visitor(std::shared_ptr<statement> const& node)
         : _node(node) {}
 
       virtual ~stmt_visitor() = default;
 
     protected:
-      output_type visit_stmt(input_type value);
+      auto visit_stmt(Input value) -> Output;
 
-      virtual output_type visit_stmt_block(input_type value) = 0;
-      virtual output_type visit_stmt_return(input_type value) = 0;
-      virtual output_type visit_stmt_expr(input_type value) = 0;
-      virtual output_type visit_stmt_if(input_type value) = 0;
-      virtual output_type visit_stmt_while(input_type value) = 0;
-      virtual output_type visit_stmt_local(input_type value) = 0;
+      virtual auto visit_stmt_block(Input value) -> Output = 0;
+      virtual auto visit_stmt_return(Input value) -> Output = 0;
+      virtual auto visit_stmt_expr(Input value) -> Output = 0;
+      virtual auto visit_stmt_if(Input value) -> Output = 0;
+      virtual auto visit_stmt_while(Input value) -> Output = 0;
+      virtual auto visit_stmt_local(Input value) -> Output = 0;
 
     protected:
       std::shared_ptr<statement> _node;
   };
 
   template <typename Input, typename Output>
-  extern Output stmt_visitor<Input, Output>::visit_stmt(Input value) {
+  extern auto stmt_visitor<Input, Output>::visit_stmt(Input value)
+    -> Output {
     switch (_node->type()) {
       case stmt_type::Block:
         return visit_stmt_block(value);

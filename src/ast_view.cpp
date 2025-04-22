@@ -17,9 +17,11 @@
  */
 
 #include "ast_view.hpp"
+#include <ostream>
 
 namespace thalia {
-  ast_view::output_type ast_view::visit_expr_assign(ast_view::input_type os) {
+  extern auto ast_view::visit_expr_assign(std::ostream& os)
+    -> std::ostream& {
     auto root = (std::shared_ptr<syntax::expr_assign> const&)_node;
     ast_view target(root->target(), _deep + 1);
     ast_view value(root->value(), _deep + 1);
@@ -31,7 +33,8 @@ namespace thalia {
       << _space << "}";
   }
 
-  ast_view::output_type ast_view::visit_expr_binary(ast_view::input_type os) {
+  extern auto ast_view::visit_expr_binary(std::ostream& os)
+    -> std::ostream& {
     auto root = (std::shared_ptr<syntax::expr_binary> const&)_node;
     ast_view lhs(root->lhs(), _deep + 1);
     ast_view rhs(root->rhs(), _deep + 1);
@@ -43,7 +46,8 @@ namespace thalia {
       << _space << "}";
   }
 
-  ast_view::output_type ast_view::visit_expr_unary(ast_view::input_type os) {
+  extern auto ast_view::visit_expr_unary(std::ostream& os)
+    -> std::ostream& {
     auto root = (std::shared_ptr<syntax::expr_unary> const&)_node;
     ast_view value(root->value(), _deep + 1);
     return os
@@ -53,7 +57,8 @@ namespace thalia {
       << _space << "}";
   }
 
-  ast_view::output_type ast_view::visit_expr_paren(ast_view::input_type os) {
+  extern auto ast_view::visit_expr_paren(std::ostream& os)
+    -> std::ostream& {
     auto root = (std::shared_ptr<syntax::expr_paren> const&)_node;
     ast_view value(root->value(), _deep + 1);
     return os
@@ -62,19 +67,22 @@ namespace thalia {
       << _space << "}";
   }
 
-  ast_view::output_type ast_view::visit_expr_base_lit(ast_view::input_type os) {
+  extern auto ast_view::visit_expr_base_lit(std::ostream& os)
+    -> std::ostream& {
     auto root = (std::shared_ptr<syntax::expr_base_lit> const&)_node;
     return os
       << _space << "ExprBaseLit { " << root->target() << " }";
   }
 
-  ast_view::output_type ast_view::visit_expr_id(ast_view::input_type os) {
+  extern auto ast_view::visit_expr_id(std::ostream& os)
+    -> std::ostream& {
     auto root = (std::shared_ptr<syntax::expr_id> const&)_node;
     return os
       << _space << "ExprId { " << root->target() << " }";
   }
 
-  ast_view::output_type ast_view::visit_expr_data_type(ast_view::input_type os) {
+  extern auto ast_view::visit_expr_data_type(std::ostream& os)
+    -> std::ostream& {
     auto root = (std::shared_ptr<syntax::expr_data_type> const&)_node;
     return os
       << _space << "ExprDataType { " << root->target() << " }";

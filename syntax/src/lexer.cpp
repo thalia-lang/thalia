@@ -90,12 +90,12 @@ namespace thalia::syntax {
   };
 
   template <typename Key, typename Value>
-  static token_type find_in(
+  static auto find_in(
     std::pair<Key, Value> const* begin,
     std::pair<Key, Value> const* end,
     Key const& key,
     Value const& def_value
-  ) {
+  ) -> Value {
     auto const* result = std::find_if(
 			begin, end,
 			[key](auto const& p) -> bool { return key == p.first; }
@@ -104,7 +104,8 @@ namespace thalia::syntax {
       ? result->second : def_value;
   }
 
-  extern std::vector<token> lexer::scan_all() {
+  extern auto lexer::scan_all()
+    -> std::vector<token> {
     std::vector<token> tokens;
     auto token = scan_next();
     while (!token.eof()) {
@@ -115,7 +116,8 @@ namespace thalia::syntax {
     return tokens;
   }
 
-  extern token lexer::scan_next() {
+  extern auto lexer::scan_next()
+    -> token {
     skip_whitespace();
     if (_target.empty())
       return token(token_type::Eof, _target, _line, _col);
@@ -129,7 +131,8 @@ namespace thalia::syntax {
     return scan_symbol(3);
   }
 
-  extern token lexer::scan_number() {
+  extern auto lexer::scan_number()
+    -> token {
     std::size_t pos = 0;
     std::size_t col = _col;
     while (pos < _target.size() && std::isdigit(_target[pos]))
@@ -140,7 +143,8 @@ namespace thalia::syntax {
     return token(token_type::Int, value, _line, col);
   }
 
-  extern token lexer::scan_kw_or_id() {
+  extern auto lexer::scan_kw_or_id()
+    -> token {
     std::size_t pos = 0;
     std::size_t col = _col;
     while (pos < _target.size()
@@ -157,7 +161,8 @@ namespace thalia::syntax {
     return token(type, value, _line, col);
   }
 
-  extern token lexer::scan_symbol(std::size_t max_size) {
+  extern auto lexer::scan_symbol(std::size_t max_size)
+    -> token {
     if (max_size > _target.size())
       return scan_symbol(max_size - 1);
 
@@ -178,13 +183,15 @@ namespace thalia::syntax {
     return token;
   }
 
-  extern std::string_view lexer::advance(std::size_t npos) {
+  extern auto lexer::advance(std::size_t npos)
+    -> std::string_view {
     auto value = _target.substr(0, npos);
     _target.remove_prefix(npos);
     return value;
   }
 
-  extern void lexer::skip_whitespace() {
+  extern auto lexer::skip_whitespace()
+    -> void {
     std::size_t pos = 0;
     while (pos < _target.size() && std::isspace(_target[pos])) {
       if (_target[pos] == '\n') {

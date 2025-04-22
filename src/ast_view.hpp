@@ -36,23 +36,24 @@ namespace thalia {
         , _deep(deep)
         , _space(deep * 2, ' ') {}
 
-      friend std::ostream& operator<<(std::ostream&, ast_view& view);
+      friend auto operator<<(std::ostream&, ast_view& view) -> std::ostream&;
 
     protected:
-      output_type visit_expr_assign(input_type os) override;
-      output_type visit_expr_binary(input_type os) override;
-      output_type visit_expr_unary(input_type os) override;
-      output_type visit_expr_paren(input_type os) override;
-      output_type visit_expr_base_lit(input_type os) override;
-      output_type visit_expr_id(input_type os) override;
-      output_type visit_expr_data_type(input_type os) override;
+      auto visit_expr_assign(std::ostream& os) -> std::ostream& override;
+      auto visit_expr_binary(std::ostream& os) -> std::ostream& override;
+      auto visit_expr_unary(std::ostream& os) -> std::ostream& override;
+      auto visit_expr_paren(std::ostream& os) -> std::ostream& override;
+      auto visit_expr_base_lit(std::ostream& os) -> std::ostream& override;
+      auto visit_expr_id(std::ostream& os) -> std::ostream& override;
+      auto visit_expr_data_type(std::ostream& os) -> std::ostream& override;
 
     private:
       std::size_t _deep;
       std::string _space;
   };
 
-  inline std::ostream& operator<<(std::ostream& os, ast_view& view) {
+  inline auto operator<<(std::ostream& os, ast_view& view)
+    -> std::ostream& {
     return view.visit_expr(os);
   }
 }

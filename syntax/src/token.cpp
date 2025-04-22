@@ -22,14 +22,14 @@
 #include "thalia-syntax/token.hpp"
 
 namespace thalia::syntax {
-  extern bool token::is(
-    std::initializer_list<token_type> types
-  ) const {
+  extern auto token::is(std::initializer_list<token_type> types) const
+    -> bool {
     const auto* result = std::find(types.begin(), types.end(), _type);
     return result != types.end();
   }
 
-  extern std::ostream& operator<<(std::ostream& os, token const& token) {
+  extern auto operator<<(std::ostream& os, token const& token)
+    -> std::ostream& {
     return os
       << token._type << "['"
       << token._value << "', "
@@ -37,7 +37,8 @@ namespace thalia::syntax {
       << token._col << "]";
   }
 
-  extern std::ostream& operator<<(std::ostream& os, token_type type) {
+  extern auto operator<<(std::ostream& os, token_type type)
+    -> std::ostream& {
     switch (type) {
       case token_type::Unknown:
         return os << "Unknown";

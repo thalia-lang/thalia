@@ -34,11 +34,15 @@ namespace thalia {
         , _max_size(max_size)
         , _size(0) {}
 
-      bool empty() { return _max_size == 0; }
-      bool full() { return _max_size && _size >= _max_size; }
+      auto empty() const -> bool
+        { return _max_size == 0; }
+      auto full() const -> bool
+        { return _max_size && _size >= _max_size; }
 
-      error_queue& operator<<(syntax::lexer::error const& error) override;
-      error_queue& operator<<(syntax::parser::error const& error) override;
+      auto operator<<(syntax::lexer::error const& error)
+        -> error_queue& override;
+      auto operator<<(syntax::parser::error const& error)
+        -> error_queue& override;
 
     private:
       std::ostream& _os;

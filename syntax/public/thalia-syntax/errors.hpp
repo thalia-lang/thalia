@@ -30,10 +30,10 @@ namespace thalia::syntax {
     error(Type type)
       : type(type), target() {}
 
-    error(Type type, Target const& target) 
+    error(Type type, Target const& target)
       : type(type), target(target) {}
 
-    error(Type type, Target&& target) 
+    error(Type type, Target&& target)
       : type(type), target(std::move(target)) {}
   };
 
@@ -42,7 +42,8 @@ namespace thalia::syntax {
     public:
       virtual ~error_queue() = default;
 
-      virtual error_queue& operator<<(error<Type, Target> const& error) = 0;
+      virtual auto operator<<(error<Type, Target> const& error)
+        -> error_queue& = 0;
   };
 }
 
