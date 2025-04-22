@@ -144,7 +144,7 @@ namespace thalia::syntax {
 
   extern auto parser::parse_unary()
     -> std::shared_ptr<expression> {
-    bool is_unary = _current->is({
+    auto is_unary = _current->is({
       token_type::Plus,
       token_type::Minus,
       token_type::LogNot,
@@ -198,7 +198,7 @@ namespace thalia::syntax {
 
   extern auto parser::parse_data_type()
     -> std::shared_ptr<expression> {
-    bool is_type = _current->is({
+    auto is_type = _current->is({
       token_type::Void,
       token_type::I8,
       token_type::I16,

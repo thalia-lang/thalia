@@ -133,8 +133,8 @@ namespace thalia::syntax {
 
   extern auto lexer::scan_number()
     -> token {
-    std::size_t pos = 0;
-    std::size_t col = _col;
+    auto pos = std::size_t(0);
+    auto col = _col;
     while (pos < _target.size() && std::isdigit(_target[pos]))
       ++pos;
 
@@ -145,8 +145,8 @@ namespace thalia::syntax {
 
   extern auto lexer::scan_kw_or_id()
     -> token {
-    std::size_t pos = 0;
-    std::size_t col = _col;
+    auto pos = std::size_t(0);
+    auto col = _col;
     while (pos < _target.size()
         && (_target[pos] == '_' || std::isalnum(_target[pos])))
       ++pos;
@@ -174,13 +174,13 @@ namespace thalia::syntax {
     if (max_size > 1 && type == token_type::Unknown)
       return scan_symbol(max_size - 1);
 
-    std::size_t col = _col;
+    auto col = _col;
     _col += max_size;
-    token token(type, advance(max_size), _line, col);
+    auto target = token(type, advance(max_size), _line, col);
 
     if (type == token_type::Unknown)
-      _errors << error(error_type::UnknownCharacter, token);
-    return token;
+      _errors << error(error_type::UnknownCharacter, target);
+    return target;
   }
 
   extern auto lexer::advance(std::size_t npos)
@@ -192,7 +192,7 @@ namespace thalia::syntax {
 
   extern auto lexer::skip_whitespace()
     -> void {
-    std::size_t pos = 0;
+    auto pos = std::size_t(0);
     while (pos < _target.size() && std::isspace(_target[pos])) {
       if (_target[pos] == '\n') {
         _col = 1;

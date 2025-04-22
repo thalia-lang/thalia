@@ -23,8 +23,8 @@ namespace thalia {
   extern auto ast_view::visit_expr_assign(std::ostream& os)
     -> std::ostream& {
     auto root = (std::shared_ptr<syntax::expr_assign> const&)_node;
-    ast_view target(root->target(), _deep + 1);
-    ast_view value(root->value(), _deep + 1);
+    auto target = ast_view(root->target(), _deep + 1);
+    auto value = ast_view(root->value(), _deep + 1);
     return os
       << _space << "ExprAssign {\n  "
       << _space << root->operation() << ",\n"
@@ -36,8 +36,8 @@ namespace thalia {
   extern auto ast_view::visit_expr_binary(std::ostream& os)
     -> std::ostream& {
     auto root = (std::shared_ptr<syntax::expr_binary> const&)_node;
-    ast_view lhs(root->lhs(), _deep + 1);
-    ast_view rhs(root->rhs(), _deep + 1);
+    auto lhs = ast_view(root->lhs(), _deep + 1);
+    auto rhs = ast_view(root->rhs(), _deep + 1);
     return os
       << _space << "ExprBinary {\n  "
       << _space << root->operation() << ",\n"
@@ -49,7 +49,7 @@ namespace thalia {
   extern auto ast_view::visit_expr_unary(std::ostream& os)
     -> std::ostream& {
     auto root = (std::shared_ptr<syntax::expr_unary> const&)_node;
-    ast_view value(root->value(), _deep + 1);
+    auto value = ast_view(root->value(), _deep + 1);
     return os
       << _space << "ExprUnary {\n  "
       << _space << root->operation() << ",\n"
@@ -60,7 +60,7 @@ namespace thalia {
   extern auto ast_view::visit_expr_paren(std::ostream& os)
     -> std::ostream& {
     auto root = (std::shared_ptr<syntax::expr_paren> const&)_node;
-    ast_view value(root->value(), _deep + 1);
+    auto value = ast_view(root->value(), _deep + 1);
     return os
       << _space << "ExprParen {\n  "
       << value << "\n"

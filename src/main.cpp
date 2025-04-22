@@ -32,11 +32,11 @@ extern auto main(int argc, char** argv) -> int {
     return 1;
   }
 
-  std::string code(argv[1]);
-  error_queue equeue(std::cout);
+  auto code = std::string(argv[1]);
+  auto equeue = error_queue(std::cout);
 
   std::cout << "=== LEXER ===\n";
-  syntax::lexer lexer(equeue, code.begin(), code.end());
+  auto lexer = syntax::lexer(equeue, code.begin(), code.end());
   auto tokens = lexer.scan_all();
   for (auto const& t: tokens)
     std::cout << t << '\n';
@@ -44,12 +44,12 @@ extern auto main(int argc, char** argv) -> int {
     return 1;
 
   std::cout << "\n=== PARSER ===\n";
-  syntax::parser parser(equeue, tokens);
+  auto parser = syntax::parser(equeue, tokens);
   auto ast = parser.parse();
   if (!equeue.empty())
     return 1;
 
-  ast_view view(ast);
+  auto view = ast_view(ast);
   std::cout << view << '\n';
   return 0;
 }
