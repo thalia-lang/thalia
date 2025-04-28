@@ -16,47 +16,46 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef _THALIA_AST_VIEW_
-#define _THALIA_AST_VIEW_
+#ifndef _THALIA_STMT_VIEW_
+#define _THALIA_STMT_VIEW_
 
 #include <memory>
 #include <ostream>
 #include <string>
 
-#include <thalia-syntax/exprs.hpp>
+#include <thalia-syntax/stmts.hpp>
 
 namespace thalia {
-  class ast_view
-    : public syntax::expr_visitor<std::ostream&, std::ostream&> {
+  class stmt_view
+    : public syntax::stmt_visitor<std::ostream&, std::ostream&> {
     public:
-      ast_view(
-        std::shared_ptr<syntax::expression> const& node,
+      stmt_view(
+        std::shared_ptr<syntax::statement> const& node,
         std::size_t deep = 0
-      ) : syntax::expr_visitor<std::ostream&, std::ostream&>(node)
+      ) : syntax::stmt_visitor<std::ostream&, std::ostream&>(node)
         , _deep(deep)
         , _space(deep * 2, ' ') {}
 
-      friend auto operator<<(std::ostream&, ast_view& view) -> std::ostream&;
+      friend auto operator<<(std::ostream&, stmt_view& view) -> std::ostream&;
 
     protected:
-      auto visit_expr_assign(std::ostream& os) -> std::ostream& override;
-      auto visit_expr_binary(std::ostream& os) -> std::ostream& override;
-      auto visit_expr_unary(std::ostream& os) -> std::ostream& override;
-      auto visit_expr_paren(std::ostream& os) -> std::ostream& override;
-      auto visit_expr_base_lit(std::ostream& os) -> std::ostream& override;
-      auto visit_expr_id(std::ostream& os) -> std::ostream& override;
-      auto visit_expr_data_type(std::ostream& os) -> std::ostream& override;
+      auto visit_stmt_block(std::ostream& os) -> std::ostream& override;
+      auto visit_stmt_return(std::ostream& os) -> std::ostream& override;
+      auto visit_stmt_expr(std::ostream& os) -> std::ostream& override;
+      auto visit_stmt_local(std::ostream& os) -> std::ostream& override;
+      auto visit_stmt_if(std::ostream& os) -> std::ostream& override;
+      auto visit_stmt_while(std::ostream& os) -> std::ostream& override;
 
     private:
       std::size_t _deep;
       std::string _space;
   };
 
-  inline auto operator<<(std::ostream& os, ast_view& view)
+  inline auto operator<<(std::ostream& os, stmt_view& view)
     -> std::ostream& {
-    return view.visit_expr(os);
+    return view.visit_stmt(os);
   }
 }
 
-#endif // _THALIA_AST_VIEW_
+#endif // _THALIA_STMT_VIEW_
 

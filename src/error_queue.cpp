@@ -53,10 +53,18 @@ namespace thalia {
         _os << "Unexpected end of the file"; break;
       case t::ExpectedDataType:
         _os << "Expected a data type"; break;
+      case t::ExpectedLParen:
+        _os << "Expected '(' before expression"; break;
       case t::ExpectedRParen:
-        _os << "Expected '(' after expression"; break;
+        _os << "Expected ')' after expression"; break;
       case t::ExpectedPrimary:
         _os << "Expected a primary expression"; break;
+      case t::ExpectedSemi:
+        _os << "Expected a semicolon in the end of the statement"; break;
+      case t::ExpectedLBrace:
+        _os << "Expected '{' before a block"; break;
+      case t::ExpectedRBrace:
+        _os << "Expected '}' after a block"; break;
     }
 
     _os

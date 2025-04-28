@@ -107,12 +107,12 @@ namespace thalia::syntax {
   extern auto lexer::scan_all()
     -> std::vector<token> {
     std::vector<token> tokens;
-    auto token = scan_next();
-    while (!token.eof()) {
+    token token;
+    do {
+      token = scan_next();
       if (!token.unknown())
         tokens.push_back(token);
-      token = scan_next();
-    }
+    } while(!token.eof());
     return tokens;
   }
 

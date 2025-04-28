@@ -35,7 +35,7 @@ namespace thalia {
         , _size(0) {}
 
       auto empty() const -> bool
-        { return _max_size == 0; }
+        { return _size == 0; }
       auto full() const -> bool
         { return _max_size && _size >= _max_size; }
 

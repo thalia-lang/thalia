@@ -1,2 +1,1 @@
-def i = 89;
-
+return x + 7;

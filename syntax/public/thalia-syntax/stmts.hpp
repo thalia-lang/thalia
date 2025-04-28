@@ -85,7 +85,7 @@ namespace thalia::syntax {
       explicit stmt_if(
         std::shared_ptr<expression> const& condition,
         std::shared_ptr<statement> const& main_body,
-        std::shared_ptr<statement> const& else_body
+        std::shared_ptr<statement> const& else_body = nullptr
       ) : statement(stmt_type::If)
         , _condition(condition)
         , _main_body(main_body)
@@ -125,31 +125,24 @@ namespace thalia::syntax {
 
   class stmt_local: public statement {
     public:
-      explicit stmt_local(
-        token const& id,
-        std::shared_ptr<expression> const& data_type,
-        std::shared_ptr<expression> const& value,
-        bool mut = false
-      ) : statement(stmt_type::Local)
-        , _id(id)
-        , _data_type(data_type)
-        , _value(value)
-        , _mut(mut) {}
+      struct variable {
+        token id;
+        std::shared_ptr<expression> data_type;
+        std::shared_ptr<expression> value;
+        bool mut;
+      };
 
-      auto is_mut() const -> bool
-        { return _mut; }
-      auto id() const -> token
-        { return _id; }
-      auto data_type() const -> std::shared_ptr<expression>
-        { return _data_type; }
-      auto value() const -> std::shared_ptr<expression>
-        { return _value; }
+    public:
+      explicit stmt_local(
+        std::vector<variable> const& content
+      ) : statement(stmt_type::Local)
+        , _content(content) {}
+
+      auto content() const -> std::vector<variable>
+        { return _content; }
 
     private:
-      token _id;
-      std::shared_ptr<expression> _data_type;
-      std::shared_ptr<expression> _value;
-      bool _mut;
+      std::vector<variable> _content;
   };
 
   template <typename Input, typename Output>

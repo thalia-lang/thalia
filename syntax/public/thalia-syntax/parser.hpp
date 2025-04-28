@@ -26,6 +26,8 @@
 
 #include "errors.hpp"
 #include "exprs.hpp"
+#include "stmts.hpp"
+#include "token.hpp"
 
 namespace thalia::syntax {
   class parser {
@@ -34,7 +36,11 @@ namespace thalia::syntax {
         UnexpectedEof,
         ExpectedDataType,
         ExpectedPrimary,
-        ExpectedRParen
+        ExpectedLParen,
+        ExpectedRParen,
+        ExpectedSemi,
+        ExpectedLBrace,
+        ExpectedRBrace
       };
 
       using error = error<error_type, token>;
@@ -43,39 +49,60 @@ namespace thalia::syntax {
     public:
       explicit parser(
         error_queue& equeue,
+        std::vector<token> const& tokens
+      ) : parser(equeue, tokens.cbegin(), tokens.cend()) {}
+
+      auto parse() -> std::vector<std::shared_ptr<statement>>;
+
+    private:
+      explicit parser(
+        error_queue& equeue,
         std::vector<token>::const_iterator begin,
         std::vector<token>::const_iterator end
       ) : _errors(equeue)
         , _end(end)
         , _current(begin) {}
 
-      explicit parser(
-        error_queue& equeue,
-        std::vector<token> const& tokens
-      ) : parser(equeue, tokens.cbegin(), tokens.cend()) {}
+      auto eof() -> bool
+        { return _current->is(token_type::Eof); }
+      auto match(token_type type) -> bool
+        { return _current->is(type); }
+      auto match(std::initializer_list<token_type> types) -> bool
+        { return _current->is(types); }
 
-      auto parse() -> std::shared_ptr<expression>;
-
-    private:
       auto advance() -> token const&;
+      auto throw_error(
+        error error,
+        std::initializer_list<token_type> skip_until = {}
+      ) -> void;
 
-      auto parse_expression() -> std::shared_ptr<expression>;
-      auto parse_assign() -> std::shared_ptr<expression>;
-      auto parse_log_or() -> std::shared_ptr<expression>;
-      auto parse_log_and() -> std::shared_ptr<expression>;
-      auto parse_bit_or() -> std::shared_ptr<expression>;
-      auto parse_xor() -> std::shared_ptr<expression>;
-      auto parse_bit_and() -> std::shared_ptr<expression>;
-      auto parse_equ() -> std::shared_ptr<expression>;
-      auto parse_rel() -> std::shared_ptr<expression>;
-      auto parse_shift() -> std::shared_ptr<expression>;
-      auto parse_add() -> std::shared_ptr<expression>;
-      auto parse_mul() -> std::shared_ptr<expression>;
-      auto parse_unary() -> std::shared_ptr<expression>;
-      auto parse_primary() -> std::shared_ptr<expression>;
-      auto parse_data_type() -> std::shared_ptr<expression>;
+      auto parse_statement() -> std::shared_ptr<statement>;
+      auto parse_expression() -> std::shared_ptr<expression>
+        { return parse_expr_assign(); }
 
-      auto parse_binary(
+      auto parse_stmt_block() -> std::shared_ptr<statement>;
+      auto parse_stmt_return() -> std::shared_ptr<statement>;
+      auto parse_stmt_expr() -> std::shared_ptr<statement>;
+      auto parse_stmt_if() -> std::shared_ptr<statement>;
+      auto parse_stmt_while() -> std::shared_ptr<statement>;
+      /*auto parse_stmt_local() -> std::shared_ptr<statement>;*/
+
+      auto parse_expr_assign() -> std::shared_ptr<expression>;
+      auto parse_expr_log_or() -> std::shared_ptr<expression>;
+      auto parse_expr_log_and() -> std::shared_ptr<expression>;
+      auto parse_expr_bit_or() -> std::shared_ptr<expression>;
+      auto parse_expr_xor() -> std::shared_ptr<expression>;
+      auto parse_expr_bit_and() -> std::shared_ptr<expression>;
+      auto parse_expr_equ() -> std::shared_ptr<expression>;
+      auto parse_expr_rel() -> std::shared_ptr<expression>;
+      auto parse_expr_shift() -> std::shared_ptr<expression>;
+      auto parse_expr_add() -> std::shared_ptr<expression>;
+      auto parse_expr_mul() -> std::shared_ptr<expression>;
+      auto parse_expr_unary() -> std::shared_ptr<expression>;
+      auto parse_expr_primary() -> std::shared_ptr<expression>;
+      auto parse_expr_data_type() -> std::shared_ptr<expression>;
+
+      auto parse_expr_binary(
         std::initializer_list<token_type> types,
         std::function<std::shared_ptr<expression>()> next_value
       ) -> std::shared_ptr<expression>;

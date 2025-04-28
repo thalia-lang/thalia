@@ -16,16 +16,14 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <memory>
-
-#include "ast_view.hpp"
+#include "expr_view.hpp"
 
 namespace thalia {
-  extern auto ast_view::visit_expr_assign(std::ostream& os)
+  extern auto expr_view::visit_expr_assign(std::ostream& os)
     -> std::ostream& {
     auto root = std::static_pointer_cast<syntax::expr_assign>(_node);
-    auto target = ast_view(root->target(), _deep + 1);
-    auto value = ast_view(root->value(), _deep + 1);
+    auto target = expr_view(root->target(), _deep + 1);
+    auto value = expr_view(root->value(), _deep + 1);
     return os
       << _space << "ExprAssign {\n  "
       << _space << root->operation() << ",\n"
@@ -34,11 +32,11 @@ namespace thalia {
       << _space << "}";
   }
 
-  extern auto ast_view::visit_expr_binary(std::ostream& os)
+  extern auto expr_view::visit_expr_binary(std::ostream& os)
     -> std::ostream& {
     auto root = std::static_pointer_cast<syntax::expr_binary>(_node);
-    auto lhs = ast_view(root->lhs(), _deep + 1);
-    auto rhs = ast_view(root->rhs(), _deep + 1);
+    auto lhs = expr_view(root->lhs(), _deep + 1);
+    auto rhs = expr_view(root->rhs(), _deep + 1);
     return os
       << _space << "ExprBinary {\n  "
       << _space << root->operation() << ",\n"
@@ -47,10 +45,10 @@ namespace thalia {
       << _space << "}";
   }
 
-  extern auto ast_view::visit_expr_unary(std::ostream& os)
+  extern auto expr_view::visit_expr_unary(std::ostream& os)
     -> std::ostream& {
     auto root = std::static_pointer_cast<syntax::expr_unary>(_node);
-    auto value = ast_view(root->value(), _deep + 1);
+    auto value = expr_view(root->value(), _deep + 1);
     return os
       << _space << "ExprUnary {\n  "
       << _space << root->operation() << ",\n"
@@ -58,31 +56,31 @@ namespace thalia {
       << _space << "}";
   }
 
-  extern auto ast_view::visit_expr_paren(std::ostream& os)
+  extern auto expr_view::visit_expr_paren(std::ostream& os)
     -> std::ostream& {
     auto root = std::static_pointer_cast<syntax::expr_paren>(_node);
-    auto value = ast_view(root->value(), _deep + 1);
+    auto value = expr_view(root->value(), _deep + 1);
     return os
       << _space << "ExprParen {\n  "
       << value << "\n"
       << _space << "}";
   }
 
-  extern auto ast_view::visit_expr_base_lit(std::ostream& os)
+  extern auto expr_view::visit_expr_base_lit(std::ostream& os)
     -> std::ostream& {
     auto root = std::static_pointer_cast<syntax::expr_base_lit>(_node);
     return os
       << _space << "ExprBaseLit { " << root->target() << " }";
   }
 
-  extern auto ast_view::visit_expr_id(std::ostream& os)
+  extern auto expr_view::visit_expr_id(std::ostream& os)
     -> std::ostream& {
     auto root = std::static_pointer_cast<syntax::expr_id>(_node);
     return os
       << _space << "ExprId { " << root->target() << " }";
   }
 
-  extern auto ast_view::visit_expr_data_type(std::ostream& os)
+  extern auto expr_view::visit_expr_data_type(std::ostream& os)
     -> std::ostream& {
     auto root = std::static_pointer_cast<syntax::expr_data_type>(_node);
     return os
