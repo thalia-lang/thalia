@@ -67,7 +67,7 @@ extern auto main(int argc, char** argv) -> int {
     std::cout << t << '\n';
 
   std::cout << "\n=== Syntax Tree ===\n";
-  for (const auto& node: ast) {
+  for (auto const& node: ast) {
     auto view = stmt_view(node);
     std::cout << view << '\n';
   }
