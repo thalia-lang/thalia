@@ -55,6 +55,13 @@ namespace thalia::syntax {
         std::size_t init_col = 1
       ) : lexer(equeue, std::string_view(begin, end), init_line, init_col) {}
 
+      explicit lexer(
+        error_queue& equeue,
+        std::string const& target,
+        std::size_t init_line = 1,
+        std::size_t init_col = 1
+      ) : lexer(equeue, std::string_view(target), init_line, init_col) {}
+
       auto scan_next() -> token;
       auto scan_all() -> std::vector<token>;
 
