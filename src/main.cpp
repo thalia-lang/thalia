@@ -51,7 +51,7 @@ extern auto main(int argc, char** argv) -> int {
   );
 
   using namespace thalia;
-  auto equeue = error_queue(std::cout);
+  auto equeue = error_queue(std::cout, 20);
   auto lexer = syntax::lexer(equeue, code.begin(), code.end());
   auto tokens = lexer.scan_all();
   if (!equeue.empty())

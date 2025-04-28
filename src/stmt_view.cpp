@@ -76,6 +76,7 @@ namespace thalia {
       auto else_body = stmt_view(root->else_body(), _deep + 1);
       os << else_body << "\n";
     }
+
     return os
       << _space << "}";
   }
