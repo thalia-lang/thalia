@@ -21,6 +21,7 @@
 
 #include <memory>
 #include <vector>
+#include <span>
 
 #include "node.hpp"
 #include "exprs.hpp"
@@ -45,7 +46,7 @@ namespace thalia::syntax {
       ) : statement(stmt_type::Block)
         , _content(content) {}
 
-      auto content() const -> std::vector<std::shared_ptr<statement>>
+      auto content() const -> std::span<std::shared_ptr<statement> const>
         { return _content; }
 
     private:
@@ -138,7 +139,7 @@ namespace thalia::syntax {
       ) : statement(stmt_type::Local)
         , _content(content) {}
 
-      auto content() const -> std::vector<variable>
+      auto content() const -> std::span<variable const>
         { return _content; }
 
     private:
