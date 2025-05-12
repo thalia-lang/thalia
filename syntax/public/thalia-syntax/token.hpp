@@ -93,7 +93,7 @@ namespace thalia::syntax {
 
   class token {
     public:
-      explicit token(
+      token(
         token_type type = token_type::Unknown,
         std::string_view value = {},
         std::size_t line = 1,

@@ -41,7 +41,7 @@ namespace thalia::syntax {
 
   class stmt_block: public statement {
     public:
-      explicit stmt_block(
+      stmt_block(
         std::vector<std::shared_ptr<statement>> const& content
       ) : statement(stmt_type::Block)
         , _content(content) {}
@@ -55,7 +55,7 @@ namespace thalia::syntax {
 
   class stmt_expr: public statement {
     public:
-      explicit stmt_expr(
+      stmt_expr(
         std::shared_ptr<expression> const& value
       ) : statement(stmt_type::Expr)
         , _value(value) {}
@@ -69,7 +69,7 @@ namespace thalia::syntax {
 
   class stmt_return: public statement {
     public:
-      explicit stmt_return(
+      stmt_return(
         std::shared_ptr<expression> const& value
       ) : statement(stmt_type::Return)
         , _value(value) {}
@@ -83,7 +83,7 @@ namespace thalia::syntax {
 
   class stmt_if: public statement {
     public:
-      explicit stmt_if(
+      stmt_if(
         std::shared_ptr<expression> const& condition,
         std::shared_ptr<statement> const& main_body,
         std::shared_ptr<statement> const& else_body = nullptr
@@ -107,7 +107,7 @@ namespace thalia::syntax {
 
   class stmt_while: public statement {
     public:
-      explicit stmt_while(
+      stmt_while(
         std::shared_ptr<expression> const& condition,
         std::shared_ptr<statement> const& body
       ) : statement(stmt_type::While)
@@ -134,7 +134,7 @@ namespace thalia::syntax {
       };
 
     public:
-      explicit stmt_local(
+      stmt_local(
         std::vector<variable> const& content
       ) : statement(stmt_type::Local)
         , _content(content) {}
@@ -149,7 +149,7 @@ namespace thalia::syntax {
   template <typename Input, typename Output>
   class stmt_visitor {
     public:
-      explicit stmt_visitor(std::shared_ptr<statement> const& node)
+      stmt_visitor(std::shared_ptr<statement> const& node)
         : _node(node) {}
 
       virtual ~stmt_visitor() = default;

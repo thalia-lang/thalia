@@ -61,7 +61,7 @@ namespace thalia {
     auto root = std::static_pointer_cast<syntax::expr_paren>(_node);
     auto value = expr_view(root->value(), _deep + 1);
     return os
-      << _space << "ExprParen {\n  "
+      << _space << "ExprParen {\n"
       << value << "\n"
       << _space << "}";
   }

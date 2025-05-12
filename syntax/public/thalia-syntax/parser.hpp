@@ -47,7 +47,7 @@ namespace thalia::syntax {
       using error_queue = error_queue<error_type, token>;
 
     public:
-      explicit parser(
+      parser(
         error_queue& equeue,
         std::vector<token> const& tokens
       ) : parser(equeue, tokens.cbegin(), tokens.cend()) {}
@@ -55,7 +55,7 @@ namespace thalia::syntax {
       auto parse() -> std::vector<std::shared_ptr<statement>>;
 
     private:
-      explicit parser(
+      parser(
         error_queue& equeue,
         std::vector<token>::const_iterator begin,
         std::vector<token>::const_iterator end
@@ -71,21 +71,21 @@ namespace thalia::syntax {
         { return _current->is(types); }
 
       auto advance() -> token const&;
-      auto throw_error(
-        error error,
-        std::initializer_list<token_type> skip_until = {}
-      ) -> void;
+      auto consume(
+        std::initializer_list<token_type> types,
+        error_type error
+      ) -> token const&;
+      auto skip_until(std::initializer_list<token_type> types) -> void;
 
       auto parse_statement() -> std::shared_ptr<statement>;
-      auto parse_expression() -> std::shared_ptr<expression>
-        { return parse_expr_assign(); }
+      auto parse_expression() -> std::shared_ptr<expression>;
 
       auto parse_stmt_block() -> std::shared_ptr<statement>;
       auto parse_stmt_return() -> std::shared_ptr<statement>;
       auto parse_stmt_expr() -> std::shared_ptr<statement>;
       auto parse_stmt_if() -> std::shared_ptr<statement>;
       auto parse_stmt_while() -> std::shared_ptr<statement>;
-      /*auto parse_stmt_local() -> std::shared_ptr<statement>;*/
+      auto parse_stmt_local() -> std::shared_ptr<statement>;
 
       auto parse_expr_assign() -> std::shared_ptr<expression>;
       auto parse_expr_log_or() -> std::shared_ptr<expression>;
@@ -100,8 +100,8 @@ namespace thalia::syntax {
       auto parse_expr_mul() -> std::shared_ptr<expression>;
       auto parse_expr_unary() -> std::shared_ptr<expression>;
       auto parse_expr_primary() -> std::shared_ptr<expression>;
+      auto parse_expr_paren() -> std::shared_ptr<expression>;
       auto parse_expr_data_type() -> std::shared_ptr<expression>;
-
       auto parse_expr_binary(
         std::initializer_list<token_type> types,
         std::function<std::shared_ptr<expression>()> next_value

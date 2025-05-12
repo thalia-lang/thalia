@@ -39,7 +39,7 @@ namespace thalia::syntax {
 
   class expr_assign: public expression {
     public:
-      explicit expr_assign(
+      expr_assign(
         token const& operation,
         std::shared_ptr<expression> const& target,
         std::shared_ptr<expression> const& value
@@ -63,7 +63,7 @@ namespace thalia::syntax {
 
   class expr_binary: public expression {
     public:
-      explicit expr_binary(
+      expr_binary(
         token const& operation,
         std::shared_ptr<expression> const& lhs,
         std::shared_ptr<expression> const& rhs
@@ -87,7 +87,7 @@ namespace thalia::syntax {
 
   class expr_unary: public expression {
     public:
-      explicit expr_unary(
+      expr_unary(
         token const& operation,
         std::shared_ptr<expression> const& value
       ) : expression(expr_type::Unary)
@@ -106,9 +106,8 @@ namespace thalia::syntax {
 
   class expr_paren: public expression {
     public:
-      explicit expr_paren(
-        std::shared_ptr<expression> const& value
-      ) : expression(expr_type::Paren)
+      expr_paren(std::shared_ptr<expression> const& value)
+        : expression(expr_type::Paren)
         , _value(value) {}
 
       auto value() const -> std::shared_ptr<expression>
@@ -120,7 +119,7 @@ namespace thalia::syntax {
 
   class expr_base_lit: public expression {
     public:
-      explicit expr_base_lit(token const& target)
+      expr_base_lit(token const& target)
         : expression(expr_type::BaseLit)
         , _target(target) {}
 
@@ -132,7 +131,7 @@ namespace thalia::syntax {
 
   class expr_id: public expression {
     public:
-      explicit expr_id(token const& target)
+      expr_id(token const& target)
         : expression(expr_type::Id)
         , _target(target) {}
 
@@ -144,7 +143,7 @@ namespace thalia::syntax {
 
   class expr_data_type: public expression {
     public:
-      explicit expr_data_type(token const& target)
+      expr_data_type(token const& target)
         : expression(expr_type::DataType)
         , _target(target) {}
 
@@ -157,7 +156,7 @@ namespace thalia::syntax {
   template <typename Input, typename Output>
   class expr_visitor {
     public:
-      explicit expr_visitor(std::shared_ptr<expression> const& node)
+      expr_visitor(std::shared_ptr<expression> const& node)
         : _node(node) {}
 
       virtual ~expr_visitor() = default;

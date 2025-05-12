@@ -37,7 +37,7 @@ namespace thalia::syntax {
       using error_queue = error_queue<error_type, token>;
 
     public:
-      explicit lexer(
+      lexer(
         error_queue& equeue,
         std::string_view target,
         std::size_t init_line = 1,
@@ -47,7 +47,7 @@ namespace thalia::syntax {
         , _line(init_line)
         , _col(init_col) {}
 
-      explicit lexer(
+      lexer(
         error_queue& equeue,
         std::string::const_iterator begin,
         std::string::const_iterator end,
@@ -55,7 +55,7 @@ namespace thalia::syntax {
         std::size_t init_col = 1
       ) : lexer(equeue, std::string_view(begin, end), init_line, init_col) {}
 
-      explicit lexer(
+      lexer(
         error_queue& equeue,
         std::string const& target,
         std::size_t init_line = 1,

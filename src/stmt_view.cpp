@@ -59,7 +59,7 @@ namespace thalia {
       os << view << "\n";
     }
     return os
-      << _space << " }";
+      << _space << "}";
   }
 
   extern auto stmt_view::visit_stmt_if(std::ostream& os)
