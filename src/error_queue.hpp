@@ -29,7 +29,7 @@ namespace thalia {
     : public syntax::lexer::error_queue
     , public syntax::parser::error_queue {
     public:
-      explicit error_queue(std::ostream& os, std::size_t max_size = 0)
+      error_queue(std::ostream& os, std::size_t max_size = 0)
         : _os(os)
         , _max_size(max_size)
         , _size(0) {}

@@ -33,7 +33,8 @@ namespace thalia::syntax {
 
       auto is(Type type) const -> bool
         { return _type == type; }
-      auto is(std::initializer_list<Type>types) const -> bool;
+      auto is(std::initializer_list<Type> types) const -> bool
+        { return types.end() != std::find(types, _type); }
 
       auto type() const -> Type
         { return _type; }
@@ -41,13 +42,6 @@ namespace thalia::syntax {
     private:
       Type _type;
   };
-
-  template <typename Type>
-  extern auto node<Type>::is(std::initializer_list<Type> types) const
-    -> bool {
-    auto const* result = std::find(types.begin(), types.end(), _type);
-    return result != types.end();
-  }
 }
 
 #endif // _THALIA_SYNTAX_NODE_
