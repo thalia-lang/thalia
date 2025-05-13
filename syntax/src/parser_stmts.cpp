@@ -51,21 +51,40 @@ namespace thalia::syntax {
 
   extern auto parser::parse_stmt_local()
     -> std::shared_ptr<statement> {
-    return nullptr;
+    auto content = std::vector<stmt_local::variable>();
+    do {
+      advance();
+      auto mut = match(token_type::Mut);
+      if (mut) advance();
+
+      auto id = consume({ token_type::Id }, error_type::ExpectedId);
+      consume({ token_type::Colon }, error_type::ExpectedColon);
+      auto data_type = parse_expr_data_type();
+
+      if (mut && !match(token_type::Assign))
+        throw error(error_type::ExpectedConstValue, *_current);
+
+      auto assign = match(token_type::Assign);
+      if (assign) advance();
+      content.push_back(stmt_local::variable(
+        mut, id, data_type,
+        (assign ? parse_expression() : nullptr)
+      ));
+    } while (match(token_type::Comma));
+    consume({ token_type::Semi }, error_type::ExpectedSemi);
+    return std::make_shared<stmt_local>(content);
   }
 
   extern auto parser::parse_stmt_if()
     -> std::shared_ptr<statement> {
     advance();
     auto condition = parse_expression();
-    consume({ token_type::LBrace }, error_type::ExpectedLBrace);
     auto main_body = parse_stmt_block();
 
     if (!match(token_type::Else))
       return std::make_shared<stmt_if>(condition, main_body);
 
     advance();
-    consume({ token_type::LBrace }, error_type::ExpectedLBrace);
     auto else_body = parse_stmt_block();
     return std::make_shared<stmt_if>(condition, main_body, else_body);
   }
@@ -74,7 +93,6 @@ namespace thalia::syntax {
     -> std::shared_ptr<statement> {
     advance();
     auto condition = parse_expression();
-    consume({ token_type::LBrace }, error_type::ExpectedLBrace);
     auto body = parse_stmt_block();
     return std::make_shared<stmt_while>(condition, body);
   }
@@ -82,7 +100,7 @@ namespace thalia::syntax {
   extern auto parser::parse_stmt_block()
     -> std::shared_ptr<statement> {
     auto content = std::vector<std::shared_ptr<statement>>();
-    advance();
+    consume({ token_type::LBrace }, error_type::ExpectedLBrace);
     while (!eof() && !match(token_type::RBrace))
       content.push_back(parse_statement());
     consume({ token_type::RBrace }, error_type::ExpectedRBrace);

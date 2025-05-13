@@ -65,6 +65,12 @@ namespace thalia {
         _os << "Expected '{' before a block"; break;
       case t::ExpectedRBrace:
         _os << "Expected '}' after a block"; break;
+      case t::ExpectedColon:
+        _os << "Expected ':' before a type"; break;
+      case t::ExpectedConstValue:
+        _os << "Expected a value for a constant"; break;
+      case t::ExpectedId:
+        _os << "Expected an identifier in the declaration"; break;
     }
 
     _os

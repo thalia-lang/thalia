@@ -40,7 +40,10 @@ namespace thalia::syntax {
         ExpectedRParen,
         ExpectedSemi,
         ExpectedLBrace,
-        ExpectedRBrace
+        ExpectedRBrace,
+        ExpectedId,
+        ExpectedColon,
+        ExpectedConstValue
       };
 
       using error = error<error_type, token>;

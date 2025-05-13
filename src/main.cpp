@@ -53,20 +53,20 @@ extern auto main(int argc, char** argv) -> int {
   using namespace thalia;
   auto equeue = error_queue(std::cout, 20);
   auto lexer = syntax::lexer(equeue, code);
+
+  std::cout << "\n===   Lexemes   ===\n";
   auto tokens = lexer.scan_all();
   if (!equeue.empty())
     return 1;
-
-  auto parser = syntax::parser(equeue, tokens);
-  auto ast = parser.parse();
-  if (!equeue.empty())
-    return 1;
-
-  std::cout << "\n===   Lexemes   ===\n";
   for (auto const& t: tokens)
     std::cout << t << '\n';
 
+  auto parser = syntax::parser(equeue, tokens);
+
   std::cout << "\n=== Syntax Tree ===\n";
+  auto ast = parser.parse();
+  if (!equeue.empty())
+    return 1;
   for (auto const& node: ast) {
     auto view = stmt_view(node);
     std::cout << view << '\n';

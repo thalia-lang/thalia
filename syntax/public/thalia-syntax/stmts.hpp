@@ -19,6 +19,7 @@
 #ifndef _THALIA_SYNTAX_STMTS_
 #define _THALIA_SYNTAX_STMTS_
 
+#include <charconv>
 #include <memory>
 #include <vector>
 #include <span>
@@ -131,6 +132,16 @@ namespace thalia::syntax {
         std::shared_ptr<expression> data_type;
         std::shared_ptr<expression> value;
         bool mut;
+
+        variable(
+          bool mut,
+          token const& id,
+          std::shared_ptr<expression> const& data_type,
+          std::shared_ptr<expression> const& value = nullptr
+        ) : id(id)
+          , data_type(data_type)
+          , value(value)
+          , mut(mut) {}
       };
 
     public:

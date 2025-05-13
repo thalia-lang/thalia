@@ -45,8 +45,27 @@ namespace thalia {
   extern auto stmt_view::visit_stmt_local(std::ostream& os)
     -> std::ostream& {
     auto root = std::static_pointer_cast<syntax::stmt_local>(_node);
+
+    os << _space << "StmtLocal {\n";
+    for (auto const& target: root->content()) {
+      auto data_type = expr_view(target.data_type, _deep + 2);
+      os << _space << "  Variable {\n";
+
+      if (target.mut)
+        os << _space << "    Mutable\n";
+
+      os
+        << _space << "    " << target.id << "\n"
+        << data_type << "\n";
+
+      if (target.value) {
+        auto value = expr_view(target.value, _deep + 2);
+        os << value << "\n";
+      }
+      os << _space << "  }\n";
+    }
     return os
-      << _space << "StmtLocal { " << " }";
+      << _space << "}";
   }
 
   extern auto stmt_view::visit_stmt_block(std::ostream& os)
@@ -54,7 +73,7 @@ namespace thalia {
     auto root = std::static_pointer_cast<syntax::stmt_block>(_node);
 
     os << _space << "StmtBlock {\n";
-    for (const auto& node: root->content()) {
+    for (auto const& node: root->content()) {
       auto view = stmt_view(node, _deep + 1);
       os << view << "\n";
     }

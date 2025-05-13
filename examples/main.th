@@ -1,6 +1,11 @@
-if x == 5 {
-  return 4;
-}
+def MIN: i32 = 4,
+    MAX: i32 = 6;
 
-return 5;
+def mut i: i32 = MIN,
+    mut s: i32 = 0;
+
+while i <= MAX {
+  s += i;
+  i += 1;
+}
 
