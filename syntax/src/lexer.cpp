@@ -18,6 +18,7 @@
 
 #include <cctype>
 #include <cstddef>
+#include <initializer_list>
 #include <string_view>
 #include <utility>
 #include <algorithm>
@@ -26,8 +27,8 @@
 #include "thalia-syntax/token.hpp"
 
 namespace thalia::syntax {
-  static const
-    std::pair<std::string_view, token_type> keywords[14] = {
+  static auto const keywords
+    = std::initializer_list<std::pair<std::string_view, token_type>> {
     { "void", token_type::Void },
     { "i8", token_type::I8 },
     { "i16", token_type::I16 },
@@ -44,8 +45,8 @@ namespace thalia::syntax {
     { "def", token_type::Def }
   };
 
-  static const
-    std::pair<std::string_view, token_type> symbols[41] = {
+  static auto const symbols
+    = std::initializer_list<std::pair<std::string_view, token_type>> {
     { "$", token_type::Cast },
     { "-", token_type::Minus },
     { "+", token_type::Plus },

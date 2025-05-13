@@ -24,7 +24,7 @@
 namespace thalia::syntax {
   extern auto token::is(std::initializer_list<token_type> types) const
     -> bool {
-    const auto* result = std::find(types.begin(), types.end(), _type);
+    auto const* result = std::find(types.begin(), types.end(), _type);
     return result != types.end();
   }
 

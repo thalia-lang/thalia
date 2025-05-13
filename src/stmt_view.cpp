@@ -27,9 +27,9 @@ namespace thalia {
       auto root = std::static_pointer_cast<syntax::stmt_return>(_node);
       auto value = expr_view(root->value(), _deep + 1);
       return os
-      << _space << "StmtReturn {\n"
-      << value << "\n"
-      << _space << "}";
+        << _space << "StmtReturn {\n"
+        << value << "\n"
+        << _space << "}";
   }
 
   extern auto stmt_view::visit_stmt_expr(std::ostream& os)
