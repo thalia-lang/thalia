@@ -119,14 +119,21 @@ namespace thalia::syntax {
 
   class expr_base_lit: public expression {
     public:
-      expr_base_lit(token const& target)
-        : expression(expr_type::BaseLit)
-        , _target(target) {}
+      expr_base_lit(
+        token const& target,
+        std::shared_ptr<expression> const& type = nullptr
+      ) : expression(expr_type::BaseLit)
+        , _target(target)
+        , _data_type(type) {}
 
-      auto target() const -> token { return _target; }
+      auto target() const -> token
+        { return _target; }
+      auto data_type() const -> std::shared_ptr<expression>
+        { return _data_type; }
 
     private:
       token _target;
+      std::shared_ptr<expression> _data_type;
   };
 
   class expr_id: public expression {

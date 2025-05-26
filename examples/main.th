@@ -1,11 +1,11 @@
-def MIN: i32 = 4,
-    MAX: i32 = 6;
+def MIN: i32 = 4i32,
+    MAX: i32 = 6i32;
 
 def mut i: i32 = MIN,
-    mut s: i32 = 0;
+    mut s: i32 = 0i32;
 
 while i <= MAX {
   s += i;
-  i += 1;
+  i += 1i32;
 }
 

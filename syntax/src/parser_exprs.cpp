@@ -19,6 +19,7 @@
 #include "thalia-syntax/parser.hpp"
 #include "thalia-syntax/exprs.hpp"
 #include "thalia-syntax/token.hpp"
+#include <memory>
 
 namespace thalia::syntax {
   extern auto parser::parse_expression()
@@ -173,11 +174,27 @@ namespace thalia::syntax {
       return parse_expr_paren();
     if (token.is(token_type::Id))
       return std::make_shared<expr_id>(token);
-    return std::make_shared<expr_base_lit>(token);
+
+    auto lit_types = {
+      token_type::I8,
+      token_type::I16,
+      token_type::I32,
+      token_type::I64
+    };
+
+    if (!match(lit_types))
+      return std::make_shared<expr_base_lit>(token);
+
+    auto type = consume(lit_types, error_type::ExpectedLitType);
+    return std::make_shared<expr_base_lit>(
+      token,
+      std::make_shared<expr_data_type>(type)
+    );
   }
 
   extern auto parser::parse_expr_paren()
     -> std::shared_ptr<expression> {
+    advance();
     auto value = parse_expression();
     consume({ token_type::RParen }, error_type::ExpectedRParen);
     return std::make_shared<expr_paren>(value);

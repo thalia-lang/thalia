@@ -43,7 +43,8 @@ namespace thalia::syntax {
         ExpectedRBrace,
         ExpectedId,
         ExpectedColon,
-        ExpectedConstValue
+        ExpectedConstValue,
+        ExpectedLitType
       };
 
       using error = error<error_type, token>;

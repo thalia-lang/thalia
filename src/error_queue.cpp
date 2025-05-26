@@ -71,6 +71,8 @@ namespace thalia {
         _os << "Expected a value for a constant"; break;
       case t::ExpectedId:
         _os << "Expected an identifier in the declaration"; break;
+      case t::ExpectedLitType:
+        _os << "Expected data type after the literal"; break;
     }
 
     _os

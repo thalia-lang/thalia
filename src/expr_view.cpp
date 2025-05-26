@@ -17,6 +17,8 @@
  */
 
 #include "expr_view.hpp"
+#include "thalia-syntax/token.hpp"
+#include <memory>
 
 namespace thalia {
   extern auto expr_view::visit_expr_assign(std::ostream& os)
@@ -69,8 +71,16 @@ namespace thalia {
   extern auto expr_view::visit_expr_base_lit(std::ostream& os)
     -> std::ostream& {
     auto root = std::static_pointer_cast<syntax::expr_base_lit>(_node);
+    auto data_type = std::static_pointer_cast<syntax::expr_data_type>(root->data_type());
+
+    auto type_token = data_type
+      ? data_type->target().type()
+      : syntax::token_type::I64;
+
     return os
-      << _space << "ExprBaseLit { " << root->target() << " }";
+      << _space << "ExprBaseLit { "
+      << type_token << "("
+      << root->target() << ") }";
   }
 
   extern auto expr_view::visit_expr_id(std::ostream& os)
