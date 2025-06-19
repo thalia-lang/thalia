@@ -19,7 +19,6 @@
 #include "thalia-syntax/parser.hpp"
 #include "thalia-syntax/exprs.hpp"
 #include "thalia-syntax/token.hpp"
-#include <memory>
 
 namespace thalia::syntax {
   extern auto parser::parse_expression()
