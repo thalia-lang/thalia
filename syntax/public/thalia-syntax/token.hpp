@@ -119,6 +119,8 @@ namespace thalia::syntax {
         { return _line; }
       auto col() const -> std::size_t
         { return _col; }
+      auto size() const -> std::size_t
+        { return _value.size(); }
 
       friend auto operator<<(std::ostream& os, token const& token)
         -> std::ostream&;
