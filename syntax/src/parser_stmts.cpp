@@ -51,7 +51,7 @@ namespace thalia::syntax {
 
   extern auto parser::parse_stmt_local()
     -> std::shared_ptr<statement> {
-    auto content = std::vector<stmt_local::variable>();
+    auto content = std::vector<stmt_local::variable> {};
     do {
       advance();
       auto mut = match(token_type::Mut);
@@ -62,14 +62,14 @@ namespace thalia::syntax {
       auto data_type = parse_expr_data_type();
 
       if (mut && !match(token_type::Assign))
-        throw error(error_type::ExpectedConstValue, *_current);
+        throw error { error_type::ExpectedConstValue, *_current };
 
       auto assign = match(token_type::Assign);
       if (assign) advance();
-      content.push_back(stmt_local::variable(
+      content.push_back(stmt_local::variable {
         mut, id, data_type,
         (assign ? parse_expression() : nullptr)
-      ));
+      });
     } while (match(token_type::Comma));
     consume({ token_type::Semi }, error_type::ExpectedSemi);
     return std::make_shared<stmt_local>(content);
@@ -99,7 +99,7 @@ namespace thalia::syntax {
 
   extern auto parser::parse_stmt_block()
     -> std::shared_ptr<statement> {
-    auto content = std::vector<std::shared_ptr<statement>>();
+    auto content = std::vector<std::shared_ptr<statement>> {};
     consume({ token_type::LBrace }, error_type::ExpectedLBrace);
     while (!eof() && !match(token_type::RBrace))
       content.push_back(parse_statement());

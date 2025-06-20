@@ -115,10 +115,10 @@ namespace thalia::syntax {
         std::string_view value = {},
         std::size_t line = 1,
         std::size_t col = 1
-      ) : _type(type)
-        , _value(value)
-        , _line(line)
-        , _col(col) {}
+      ) : _type { type }
+        , _value { value }
+        , _line { line }
+        , _col { col } {}
 
       /**
        * @brief Checks if the token is the end-of-file token.

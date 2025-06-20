@@ -32,8 +32,8 @@ using namespace thalia::syntax;
 class fake_error_queue: public lexer::error_queue {
   public:
     fake_error_queue()
-      : lexer::error_queue()
-      , _size(0) {}
+      : lexer::error_queue {}
+      , _size { 0 } {}
 
     auto size() const
       -> std::size_t { return _size; }
@@ -49,7 +49,7 @@ static auto check_all(
   std::string code,
   std::initializer_list<token_type> types
 ) -> void {
-  auto lexer = syntax::lexer(queue, code);
+  auto lexer = syntax::lexer { queue, code };
   auto tokens = lexer.scan_all();
   REQUIRE(tokens.size() == types.size());
 
@@ -59,7 +59,7 @@ static auto check_all(
 }
 
 TEST_CASE("lexer::scan_all") {
-  auto queue = fake_error_queue();
+  auto queue = fake_error_queue {};
 
   SECTION("mixed token types") {
     check_all(

@@ -25,7 +25,7 @@ namespace thalia {
   extern auto stmt_view::visit_stmt_return(std::ostream& os)
     -> std::ostream& {
       auto root = std::static_pointer_cast<syntax::stmt_return>(_node);
-      auto value = expr_view(root->value(), _deep + 1);
+      auto value = expr_view { root->value(), _deep + 1 };
       return os
         << _space << "StmtReturn {\n"
         << value << "\n"
@@ -35,7 +35,7 @@ namespace thalia {
   extern auto stmt_view::visit_stmt_expr(std::ostream& os)
     -> std::ostream& {
     auto root = std::static_pointer_cast<syntax::stmt_expr>(_node);
-    auto value = expr_view(root->value(), _deep + 1);
+    auto value = expr_view { root->value(), _deep + 1 };
     return os
       << _space << "StmtExpr {\n"
       << value << "\n"
@@ -48,7 +48,7 @@ namespace thalia {
 
     os << _space << "StmtLocal {\n";
     for (auto const& target: root->content()) {
-      auto data_type = expr_view(target.data_type, _deep + 2);
+      auto data_type = expr_view { target.data_type, _deep + 2 };
       os << _space << "  Variable {\n";
 
       if (target.mut)
@@ -59,7 +59,7 @@ namespace thalia {
         << data_type << "\n";
 
       if (target.value) {
-        auto value = expr_view(target.value, _deep + 2);
+        auto value = expr_view { target.value, _deep + 2 };
         os << value << "\n";
       }
       os << _space << "  }\n";
@@ -74,7 +74,7 @@ namespace thalia {
 
     os << _space << "StmtBlock {\n";
     for (auto const& node: root->content()) {
-      auto view = stmt_view(node, _deep + 1);
+      auto view = stmt_view { node, _deep + 1 };
       os << view << "\n";
     }
     return os
@@ -84,15 +84,15 @@ namespace thalia {
   extern auto stmt_view::visit_stmt_if(std::ostream& os)
     -> std::ostream& {
     auto root = std::static_pointer_cast<syntax::stmt_if>(_node);
-    auto condition = expr_view(root->condition(), _deep + 1);
-    auto main_body = stmt_view(root->main_body(), _deep + 1);
+    auto condition = expr_view { root->condition(), _deep + 1 };
+    auto main_body = stmt_view { root->main_body(), _deep + 1 };
 
     os
       << _space << "StmtIf {\n"
       << condition << "\n"
       << main_body << "\n";
     if (root->else_body()) {
-      auto else_body = stmt_view(root->else_body(), _deep + 1);
+      auto else_body = stmt_view { root->else_body(), _deep + 1 };
       os << else_body << "\n";
     }
 
@@ -103,8 +103,8 @@ namespace thalia {
   extern auto stmt_view::visit_stmt_while(std::ostream& os)
     -> std::ostream& {
     auto root = std::static_pointer_cast<syntax::stmt_while>(_node);
-    auto condition = expr_view(root->condition(), _deep + 1);
-    auto body = stmt_view(root->body(), _deep + 1);
+    auto condition = expr_view { root->condition(), _deep + 1 };
+    auto body = stmt_view { root->body(), _deep + 1 };
     return os
       << _space << "StmtWhile {\n"
       << condition << "\n"

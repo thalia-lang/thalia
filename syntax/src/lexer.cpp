@@ -22,6 +22,7 @@
 #include <string_view>
 #include <utility>
 #include <algorithm>
+#include <vector>
 
 #include "thalia-syntax/lexer.hpp"
 #include "thalia-syntax/token.hpp"
@@ -107,8 +108,8 @@ namespace thalia::syntax {
 
   extern auto lexer::scan_all()
     -> std::vector<token> {
-    std::vector<token> tokens;
-    token token;
+    auto tokens = std::vector<token> {};
+    auto token = syntax::token {};
     do {
       token = scan_next();
       if (!token.unknown())
@@ -134,19 +135,19 @@ namespace thalia::syntax {
 
   extern auto lexer::scan_number()
     -> token {
-    auto pos = std::size_t(0);
+    auto pos = std::size_t { 0 };
     auto col = _col;
     while (pos < _target.size() && std::isdigit(_target[pos]))
       ++pos;
 
     auto value = advance(pos);
     _col += pos;
-    return token(token_type::Int, value, _line, col);
+    return token { token_type::Int, value, _line, col };
   }
 
   extern auto lexer::scan_kw_or_id()
     -> token {
-    auto pos = std::size_t(0);
+    auto pos = std::size_t { 0 };
     auto col = _col;
     while (pos < _target.size()
         && (_target[pos] == '_' || std::isalnum(_target[pos])))
@@ -159,7 +160,7 @@ namespace thalia::syntax {
     );
 
     _col += pos;
-    return token(type, value, _line, col);
+    return token { type, value, _line, col };
   }
 
   extern auto lexer::scan_symbol(std::size_t max_size)
@@ -177,10 +178,10 @@ namespace thalia::syntax {
 
     auto col = _col;
     _col += max_size;
-    auto target = token(type, advance(max_size), _line, col);
+    auto target = token { type, advance(max_size), _line, col };
 
     if (type == token_type::Unknown)
-      _errors << error(error_type::UnknownCharacter, target);
+      _errors << error { error_type::UnknownCharacter, target };
     return target;
   }
 
@@ -193,7 +194,7 @@ namespace thalia::syntax {
 
   extern auto lexer::skip_whitespace()
     -> void {
-    auto pos = std::size_t(0);
+    auto pos = std::size_t { 0 };
     while (pos < _target.size() && std::isspace(_target[pos])) {
       if (_target[pos] == '\n') {
         _col = 1;

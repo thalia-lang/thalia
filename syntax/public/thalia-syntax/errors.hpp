@@ -28,13 +28,13 @@ namespace thalia::syntax {
     Target target;
 
     error(Type type)
-      : type(type), target() {}
+      : type { type }, target {} {}
 
     error(Type type, Target const& target)
-      : type(type), target(target) {}
+      : type { type }, target { target } {}
 
     error(Type type, Target&& target)
-      : type(type), target(std::move(target)) {}
+      : type { type }, target { std::move(target) } {}
   };
 
   template <typename Type, typename Target>

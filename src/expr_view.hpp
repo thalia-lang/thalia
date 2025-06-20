@@ -32,9 +32,9 @@ namespace thalia {
       expr_view(
         std::shared_ptr<syntax::expression> const& node,
         std::size_t deep = 0
-      ) : syntax::expr_visitor<std::ostream&, std::ostream&>(node)
-        , _deep(deep)
-        , _space(deep * 2, ' ') {}
+      ) : syntax::expr_visitor<std::ostream&, std::ostream&> { node }
+        , _deep { deep }
+        , _space { std::string(deep * 2, ' ') } {}
 
       friend auto operator<<(std::ostream&, expr_view& view) -> std::ostream&;
 

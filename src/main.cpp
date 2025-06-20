@@ -44,15 +44,15 @@ extern auto main(int argc, char** argv) -> int {
     return 1;
   }
 
-  auto file = std::ifstream(path);
-  auto code = std::string(
-    (std::istreambuf_iterator<char>(file)),
-    (std::istreambuf_iterator<char>())
-  );
+  auto file = std::ifstream { path };
+  auto code = std::string {
+    (std::istreambuf_iterator<char> { file }),
+    (std::istreambuf_iterator<char> {})
+  };
 
   using namespace thalia;
-  auto equeue = error_queue(std::cout, 20);
-  auto lexer = syntax::lexer(equeue, code);
+  auto equeue = error_queue { std::cout, 20 };
+  auto lexer = syntax::lexer { equeue, code };
 
   std::cout << "\n===   Lexemes   ===\n";
   auto tokens = lexer.scan_all();
@@ -61,14 +61,14 @@ extern auto main(int argc, char** argv) -> int {
   for (auto const& t: tokens)
     std::cout << t << '\n';
 
-  auto parser = syntax::parser(equeue, tokens);
+  auto parser = syntax::parser { equeue, tokens };
 
   std::cout << "\n=== Syntax Tree ===\n";
   auto ast = parser.parse();
   if (!equeue.empty())
     return 1;
   for (auto const& node: ast) {
-    auto view = stmt_view(node);
+    auto view = stmt_view { node };
     std::cout << view << '\n';
   }
   return 0;

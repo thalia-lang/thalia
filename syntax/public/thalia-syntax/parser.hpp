@@ -54,7 +54,7 @@ namespace thalia::syntax {
       parser(
         error_queue& equeue,
         std::vector<token> const& tokens
-      ) : parser(equeue, tokens.cbegin(), tokens.cend()) {}
+      ) : parser { equeue, tokens.cbegin(), tokens.cend() } {}
 
       auto parse() -> std::vector<std::shared_ptr<statement>>;
 
@@ -63,9 +63,9 @@ namespace thalia::syntax {
         error_queue& equeue,
         std::vector<token>::const_iterator begin,
         std::vector<token>::const_iterator end
-      ) : _errors(equeue)
-        , _end(end)
-        , _current(begin) {}
+      ) : _errors { equeue }
+        , _end { end }
+        , _current { begin } {}
 
       auto eof() -> bool
         { return _current->is(token_type::Eof); }

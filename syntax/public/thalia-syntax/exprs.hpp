@@ -43,10 +43,10 @@ namespace thalia::syntax {
         token const& operation,
         std::shared_ptr<expression> const& target,
         std::shared_ptr<expression> const& value
-      ) : expression(expr_type::Assign)
-        , _operation(operation)
-        , _target(target)
-        , _value(value) {}
+      ) : expression { expr_type::Assign }
+        , _operation { operation }
+        , _target { target }
+        , _value { value } {}
 
       auto operation() const -> token
         { return _operation; }
@@ -67,10 +67,10 @@ namespace thalia::syntax {
         token const& operation,
         std::shared_ptr<expression> const& lhs,
         std::shared_ptr<expression> const& rhs
-      ) : expression(expr_type::Binary)
-        , _operation(operation)
-        , _lhs(lhs)
-        , _rhs(rhs) {}
+      ) : expression { expr_type::Binary }
+        , _operation { operation }
+        , _lhs { lhs }
+        , _rhs { rhs } {}
 
       auto operation() const -> token
         { return _operation; }
@@ -90,9 +90,9 @@ namespace thalia::syntax {
       expr_unary(
         token const& operation,
         std::shared_ptr<expression> const& value
-      ) : expression(expr_type::Unary)
-        , _operation(operation)
-        , _value(value) {}
+      ) : expression { expr_type::Unary }
+        , _operation { operation }
+        , _value { value } {}
 
       auto operation() const -> token
         { return _operation; }
@@ -107,8 +107,8 @@ namespace thalia::syntax {
   class expr_paren: public expression {
     public:
       expr_paren(std::shared_ptr<expression> const& value)
-        : expression(expr_type::Paren)
-        , _value(value) {}
+        : expression { expr_type::Paren }
+        , _value { value } {}
 
       auto value() const -> std::shared_ptr<expression>
         { return _value; }
@@ -122,9 +122,9 @@ namespace thalia::syntax {
       expr_base_lit(
         token const& target,
         std::shared_ptr<expression> const& type = nullptr
-      ) : expression(expr_type::BaseLit)
-        , _target(target)
-        , _data_type(type) {}
+      ) : expression { expr_type::BaseLit }
+        , _target { target }
+        , _data_type { type } {}
 
       auto target() const -> token
         { return _target; }
@@ -139,8 +139,8 @@ namespace thalia::syntax {
   class expr_id: public expression {
     public:
       expr_id(token const& target)
-        : expression(expr_type::Id)
-        , _target(target) {}
+        : expression { expr_type::Id }
+        , _target { target } {}
 
       auto target() const -> token { return _target; }
 
@@ -151,8 +151,8 @@ namespace thalia::syntax {
   class expr_data_type: public expression {
     public:
       expr_data_type(token const& target)
-        : expression(expr_type::DataType)
-        , _target(target) {}
+        : expression { expr_type::DataType }
+        , _target { target } {}
 
       auto target() const -> token { return _target; }
 
@@ -164,7 +164,7 @@ namespace thalia::syntax {
   class expr_visitor {
     public:
       expr_visitor(std::shared_ptr<expression> const& node)
-        : _node(node) {}
+        : _node { node } {}
 
       virtual ~expr_visitor() = default;
 

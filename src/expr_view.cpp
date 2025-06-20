@@ -18,14 +18,13 @@
 
 #include "expr_view.hpp"
 #include "thalia-syntax/token.hpp"
-#include <memory>
 
 namespace thalia {
   extern auto expr_view::visit_expr_assign(std::ostream& os)
     -> std::ostream& {
     auto root = std::static_pointer_cast<syntax::expr_assign>(_node);
-    auto target = expr_view(root->target(), _deep + 1);
-    auto value = expr_view(root->value(), _deep + 1);
+    auto target = expr_view { root->target(), _deep + 1 };
+    auto value = expr_view { root->value(), _deep + 1 };
     return os
       << _space << "ExprAssign {\n  "
       << _space << root->operation() << ",\n"
@@ -37,8 +36,8 @@ namespace thalia {
   extern auto expr_view::visit_expr_binary(std::ostream& os)
     -> std::ostream& {
     auto root = std::static_pointer_cast<syntax::expr_binary>(_node);
-    auto lhs = expr_view(root->lhs(), _deep + 1);
-    auto rhs = expr_view(root->rhs(), _deep + 1);
+    auto lhs = expr_view { root->lhs(), _deep + 1 };
+    auto rhs = expr_view { root->rhs(), _deep + 1 };
     return os
       << _space << "ExprBinary {\n  "
       << _space << root->operation() << ",\n"
@@ -50,7 +49,7 @@ namespace thalia {
   extern auto expr_view::visit_expr_unary(std::ostream& os)
     -> std::ostream& {
     auto root = std::static_pointer_cast<syntax::expr_unary>(_node);
-    auto value = expr_view(root->value(), _deep + 1);
+    auto value = expr_view { root->value(), _deep + 1 };
     return os
       << _space << "ExprUnary {\n  "
       << _space << root->operation() << ",\n"
@@ -61,7 +60,7 @@ namespace thalia {
   extern auto expr_view::visit_expr_paren(std::ostream& os)
     -> std::ostream& {
     auto root = std::static_pointer_cast<syntax::expr_paren>(_node);
-    auto value = expr_view(root->value(), _deep + 1);
+    auto value = expr_view { root->value(), _deep + 1 };
     return os
       << _space << "ExprParen {\n"
       << value << "\n"

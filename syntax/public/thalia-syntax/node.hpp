@@ -27,7 +27,7 @@ namespace thalia::syntax {
   class node {
     public:
       node(Type type)
-        : _type(type) {}
+        : _type { type } {}
 
       virtual ~node() = default;
 

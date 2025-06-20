@@ -32,9 +32,9 @@ namespace thalia {
       stmt_view(
         std::shared_ptr<syntax::statement> const& node,
         std::size_t deep = 0
-      ) : syntax::stmt_visitor<std::ostream&, std::ostream&>(node)
-        , _deep(deep)
-        , _space(deep * 2, ' ') {}
+      ) : syntax::stmt_visitor<std::ostream&, std::ostream&> { node }
+        , _deep { deep }
+        , _space { std::string(deep * 2, ' ') } {}
 
       friend auto operator<<(std::ostream&, stmt_view& view) -> std::ostream&;
 

@@ -21,7 +21,7 @@
 namespace thalia::syntax {
   extern auto parser::parse()
     -> std::vector<std::shared_ptr<statement>> {
-    auto result = std::vector<std::shared_ptr<statement>>();
+    auto result = std::vector<std::shared_ptr<statement>> {};
     while (!eof())
       result.push_back(parse_statement());
     return result;
@@ -31,17 +31,17 @@ namespace thalia::syntax {
     -> token const& {
     auto prev = _current;
     if (eof())
-      _errors << error(error_type::UnexpectedEof, *prev);
+      _errors << error { error_type::UnexpectedEof, *prev };
     else ++_current;
     return *prev;
   }
 
   extern auto parser::consume(
     std::initializer_list<token_type> types,
-    error_type error
+    error_type type
   ) -> token const& {
     if (!_current->is(types))
-      throw parser::error(error, *_current);
+      throw error { type, *_current };
     return advance();
   }
 

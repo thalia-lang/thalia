@@ -19,7 +19,6 @@
 #ifndef _THALIA_SYNTAX_STMTS_
 #define _THALIA_SYNTAX_STMTS_
 
-#include <charconv>
 #include <memory>
 #include <vector>
 #include <span>
@@ -44,8 +43,8 @@ namespace thalia::syntax {
     public:
       stmt_block(
         std::vector<std::shared_ptr<statement>> const& content
-      ) : statement(stmt_type::Block)
-        , _content(content) {}
+      ) : statement { stmt_type::Block }
+        , _content { content } {}
 
       auto content() const -> std::span<std::shared_ptr<statement> const>
         { return _content; }
@@ -58,8 +57,8 @@ namespace thalia::syntax {
     public:
       stmt_expr(
         std::shared_ptr<expression> const& value
-      ) : statement(stmt_type::Expr)
-        , _value(value) {}
+      ) : statement { stmt_type::Expr }
+        , _value { value } {}
 
       auto value() const -> std::shared_ptr<expression>
         { return _value; }
@@ -72,8 +71,8 @@ namespace thalia::syntax {
     public:
       stmt_return(
         std::shared_ptr<expression> const& value
-      ) : statement(stmt_type::Return)
-        , _value(value) {}
+      ) : statement { stmt_type::Return }
+        , _value { value } {}
 
       auto value() const -> std::shared_ptr<expression>
         { return _value; }
@@ -88,10 +87,10 @@ namespace thalia::syntax {
         std::shared_ptr<expression> const& condition,
         std::shared_ptr<statement> const& main_body,
         std::shared_ptr<statement> const& else_body = nullptr
-      ) : statement(stmt_type::If)
-        , _condition(condition)
-        , _main_body(main_body)
-        , _else_body(else_body) {}
+      ) : statement { stmt_type::If }
+        , _condition { condition }
+        , _main_body { main_body }
+        , _else_body { else_body } {}
 
       auto condition() const -> std::shared_ptr<expression>
         { return _condition; }
@@ -111,9 +110,9 @@ namespace thalia::syntax {
       stmt_while(
         std::shared_ptr<expression> const& condition,
         std::shared_ptr<statement> const& body
-      ) : statement(stmt_type::While)
-        , _condition(condition)
-        , _body(body) {}
+      ) : statement { stmt_type::While }
+        , _condition { condition }
+        , _body { body } {}
 
       auto condition() const -> std::shared_ptr<expression>
         { return _condition; }
@@ -138,17 +137,17 @@ namespace thalia::syntax {
           token const& id,
           std::shared_ptr<expression> const& data_type,
           std::shared_ptr<expression> const& value = nullptr
-        ) : id(id)
-          , data_type(data_type)
-          , value(value)
-          , mut(mut) {}
+        ) : id { id }
+          , data_type { data_type }
+          , value { value }
+          , mut { mut } {}
       };
 
     public:
       stmt_local(
         std::vector<variable> const& content
       ) : statement(stmt_type::Local)
-        , _content(content) {}
+        , _content { content } {}
 
       auto content() const -> std::span<variable const>
         { return _content; }
@@ -161,7 +160,7 @@ namespace thalia::syntax {
   class stmt_visitor {
     public:
       stmt_visitor(std::shared_ptr<statement> const& node)
-        : _node(node) {}
+        : _node { node } {}
 
       virtual ~stmt_visitor() = default;
 

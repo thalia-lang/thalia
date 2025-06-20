@@ -30,9 +30,11 @@ namespace thalia {
     , public syntax::parser::error_queue {
     public:
       error_queue(std::ostream& os, std::size_t max_size = 0)
-        : _os(os)
-        , _max_size(max_size)
-        , _size(0) {}
+        : syntax::lexer::error_queue {}
+        , syntax::parser::error_queue {}
+        , _os { os }
+        , _max_size { max_size }
+        , _size { 0 } {}
 
       auto empty() const -> bool
         { return _size == 0; }

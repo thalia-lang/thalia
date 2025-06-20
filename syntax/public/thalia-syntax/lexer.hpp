@@ -42,10 +42,10 @@ namespace thalia::syntax {
         std::string_view target,
         std::size_t init_line = 1,
         std::size_t init_col = 1
-      ) : _errors(equeue)
-        , _target(target)
-        , _line(init_line)
-        , _col(init_col) {}
+      ) : _errors { equeue }
+        , _target { target }
+        , _line { init_line }
+        , _col { init_col } {}
 
       lexer(
         error_queue& equeue,
@@ -53,14 +53,20 @@ namespace thalia::syntax {
         std::string::const_iterator end,
         std::size_t init_line = 1,
         std::size_t init_col = 1
-      ) : lexer(equeue, std::string_view(begin, end), init_line, init_col) {}
+      ) : lexer {
+          equeue, std::string_view { begin, end },
+          init_line, init_col
+        } {}
 
       lexer(
         error_queue& equeue,
         std::string const& target,
         std::size_t init_line = 1,
         std::size_t init_col = 1
-      ) : lexer(equeue, std::string_view(target), init_line, init_col) {}
+      ) : lexer {
+          equeue, std::string_view { target },
+          init_line, init_col
+        } {}
 
       auto scan_next() -> token;
       auto scan_all() -> std::vector<token>;
