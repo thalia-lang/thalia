@@ -23,19 +23,45 @@
 #include <initializer_list>
 
 namespace thalia::syntax {
+  /**
+   * @brief A generic base class representing a syntax tree node.
+   * @tparam Type An enum type used to identify the kind of the node.
+   */
   template <typename Type>
   class node {
     public:
+      /**
+       * @brief Constructs a node with the specified type.
+       * @param type The type of the node.
+       */
       node(Type type)
         : _type { type } {}
 
+      /**
+       * @brief Virtual destructor for safe polymorphic deletion.
+       */
       virtual ~node() = default;
 
+      /**
+       * @brief Checks if the node is of a specific type.
+       * @param type The type to check against.
+       * @return True if the node's type matches.
+       */
       auto is(Type type) const -> bool
         { return _type == type; }
+
+      /**
+       * @brief Checks if the node is one of the given types.
+       * @param types A list of types to check against.
+       * @return True if the node's type is in the list.
+       */
       auto is(std::initializer_list<Type> types) const -> bool
         { return types.end() != std::find(types, _type); }
 
+      /**
+       * @brief Gets the type of the node.
+       * @return The node's type.
+       */
       auto type() const -> Type
         { return _type; }
 
