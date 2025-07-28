@@ -32,6 +32,7 @@
 namespace thalia::syntax {
   /**
    * @brief Parses a sequence of tokens into an abstract syntax tree (AST).
+   *
    * The parser performs syntactic analysis of tokens produced by the lexer,
    * constructing a structured representation of the source code in the form of statements and expressions.
    */

@@ -104,7 +104,6 @@ namespace thalia::syntax {
     public:
       /**
        * @brief Constructs a token with the given properties.
-       *
        * @param type The type of the token.
        * @param value The raw text value associated with the token.
        * @param line The line number where the token was found.
@@ -186,7 +185,6 @@ namespace thalia::syntax {
 
       /**
        * @brief Prints a formatted token to the output stream.
-       *
        * @param os Output stream.
        * @param token The token to print.
        * @return Reference to the output stream.
@@ -203,7 +201,6 @@ namespace thalia::syntax {
 
   /**
    * @brief Prints a token_type to an output stream.
-   *
    * @param os Output stream.
    * @param type Token type to print.
    * @return Reference to the output stream.

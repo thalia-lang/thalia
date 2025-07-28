@@ -29,6 +29,7 @@
 namespace thalia::syntax {
   /**
    * @brief Performs lexical analysis on a source string.
+   *
    * The lexer reads a character stream and produces a sequence of tokens.
    * Errors encountered during lexing are reported to an external error queue.
    */
@@ -107,17 +108,17 @@ namespace thalia::syntax {
 
       /**
        * @brief Scans and returns the next token from the input.
-       * Advances the cursor past the returned token. If the end of input is reached, a token of type `Eof` is returned.
-       *
        * @return The next token in the input stream.
+       *
+       * Advances the cursor past the returned token. If the end of input is reached, a token of type `Eof` is returned.
        */
       auto scan_next() -> token;
 
       /**
        * @brief Scans the entire input and returns all tokens except those of type `Unknown`.
-       * This method repeatedly calls `scan_next()` until an EOF token is reached.
-       *
        * @return A vector containing all tokens found in the input.
+       *
+       * This method repeatedly calls `scan_next()` until an EOF token is reached.
        */
       auto scan_all() -> std::vector<token>;
 
