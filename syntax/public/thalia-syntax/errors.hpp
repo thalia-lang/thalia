@@ -22,26 +22,60 @@
 #include <utility>
 
 namespace thalia::syntax {
+  /**
+   * @brief Represents a syntax-related error with a type and an associated target.
+   * @tparam Type The enum type that represents the kind of error.
+   * @tparam Target The source or object the error refers to (a token, AST node, etc).
+   */
   template <typename Type, typename Target>
   struct error {
     Type type;
     Target target;
 
+    /**
+     * @brief Constructs an error with only a type; target is default-initialized.
+     * @param type The type of the error.
+     */
     error(Type type)
       : type { type }, target {} {}
 
+    /**
+     * @brief Constructs an error with a type and a const reference to a target.
+     * @param type The type of the error.
+     * @param target The target where the error occurred.
+     */
     error(Type type, Target const& target)
       : type { type }, target { target } {}
 
+    /**
+     * @brief Constructs an error with a type and a movable target.
+     * @param type The type of the error.
+     * @param target The target to move into the error.
+     */
     error(Type type, Target&& target)
       : type { type }, target { std::move(target) } {}
   };
 
+  /**
+   * @brief Abstract interface for managing and collecting syntax errors.
+   * @tparam Type The error type enum.
+   * @tparam Target The target where error the error occurred.
+   *
+   * This class provides a mechanism to report errors without knowing how they are stored or displayed.
+   */
   template <typename Type, typename Target>
   class error_queue {
     public:
+      /**
+       * @brief Virtual destructor for safe polymorphic deletion.
+       */
       virtual ~error_queue() = default;
 
+      /**
+       * @brief Adds an error to the queue.
+       * @param error The error to be added.
+       * @return Reference to the queue for chaining.
+       */
       virtual auto operator<<(error<Type, Target> const& error)
         -> error_queue& = 0;
   };
