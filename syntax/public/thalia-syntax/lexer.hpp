@@ -27,16 +27,38 @@
 #include "token.hpp"
 
 namespace thalia::syntax {
+  /**
+   * @brief Performs lexical analysis on a source string.
+   * The lexer reads a character stream and produces a sequence of tokens.
+   * Errors encountered during lexing are reported to an external error queue.
+   */
   class lexer {
     public:
+      /**
+       * @brief Describes the types of errors the lexer can emit.
+       */
       enum class error_type {
         UnknownCharacter
       };
 
+      /**
+       * @brief Alias for a lexer-specific error.
+       */
       using error = error<error_type, token>;
+
+      /**
+       * @brief Alias for the lexer’s error queue interface.
+       */
       using error_queue = error_queue<error_type, token>;
 
     public:
+      /**
+       * @brief Constructs a lexer from a string view.
+       * @param equeue Reference to an error queue used for reporting.
+       * @param target The input source code as a string view.
+       * @param init_line The initial line number for the cursor (default is 1).
+       * @param init_col The initial column number for the cursor (default is 1).
+       */
       lexer(
         error_queue& equeue,
         std::string_view target,
@@ -47,6 +69,14 @@ namespace thalia::syntax {
         , _line { init_line }
         , _col { init_col } {}
 
+      /**
+       * @brief Constructs a lexer from a pair of string iterators.
+       * @param equeue Reference to an error queue used for reporting.
+       * @param begin Iterator pointing to the beginning of the input string.
+       * @param end Iterator pointing to the end of the input string.
+       * @param init_line The initial line number for the cursor (default is 1).
+       * @param init_col The initial column number for the cursor (default is 1).
+       */
       lexer(
         error_queue& equeue,
         std::string::const_iterator begin,
@@ -58,6 +88,13 @@ namespace thalia::syntax {
           init_line, init_col
         } {}
 
+      /**
+       * @brief Constructs a lexer from a full std::string.
+       * @param equeue Reference to an error queue used for reporting.
+       * @param target The input source code as a full string.
+       * @param init_line The initial line number for the cursor (default is 1).
+       * @param init_col The initial column number for the cursor (default is 1).
+       */
       lexer(
         error_queue& equeue,
         std::string const& target,
@@ -68,13 +105,25 @@ namespace thalia::syntax {
           init_line, init_col
         } {}
 
+      /**
+       * @brief Scans and returns the next token from the input.
+       * Advances the cursor past the returned token. If the end of input is reached, a token of type `Eof` is returned.
+       *
+       * @return The next token in the input stream.
+       */
       auto scan_next() -> token;
+
+      /**
+       * @brief Scans the entire input and returns all tokens except those of type `Unknown`.
+       * This method repeatedly calls `scan_next()` until an EOF token is reached.
+       *
+       * @return A vector containing all tokens found in the input.
+       */
       auto scan_all() -> std::vector<token>;
 
     private:
       auto skip_whitespace() -> void;
       auto advance(std::size_t npos) -> std::string_view;
-
       auto scan_number() -> token;
       auto scan_kw_or_id() -> token;
       auto scan_symbol(std::size_t max_size = 1) -> token;
