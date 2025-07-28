@@ -76,6 +76,10 @@ namespace thalia::syntax {
         std::vector<token> const& tokens
       ) : parser { equeue, tokens.cbegin(), tokens.cend() } {}
 
+      /**
+       * @brief Parses the input tokens into a list of statements.
+       * @return A vector of parsed statement nodes (AST).
+       */
       auto parse() -> std::vector<std::shared_ptr<statement>>;
 
     private:
