@@ -30,8 +30,16 @@
 #include "token.hpp"
 
 namespace thalia::syntax {
+  /**
+   * @brief Parses a sequence of tokens into an abstract syntax tree (AST).
+   * The parser performs syntactic analysis of tokens produced by the lexer,
+   * constructing a structured representation of the source code in the form of statements and expressions.
+   */
   class parser {
     public:
+      /**
+       * @brief Represents possible syntax errors that can occur during parsing.
+       */
       enum class error_type {
         UnexpectedEof,
         ExpectedDataType,
@@ -47,10 +55,22 @@ namespace thalia::syntax {
         ExpectedLitType
       };
 
+      /**
+       * @brief Type alias for parser-specific syntax errors.
+       */
       using error = error<error_type, token>;
+
+      /**
+       * @brief Type alias for a parser error queue.
+       */
       using error_queue = error_queue<error_type, token>;
 
     public:
+      /**
+       * @brief Constructs a parser from a complete token vector.
+       * @param equeue Reference to the error queue used to report syntax errors.
+       * @param tokens The full sequence of tokens to parse.
+       */
       parser(
         error_queue& equeue,
         std::vector<token> const& tokens
